@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf=8">
+		<meta name="viewport" content="width=device-width, initial-scale=1" >
+		<title>Runner++ Geolocation - Leaflet</title>
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" >
+	</head>
+	<body>
+		<p> Show map of your location. </p>
+		<button onclick="showLoc()">Show Map</button>
+		<p id="test"></p>
+
+		<div id="map" style="height: 500px"></div>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+		<!-- <script src="script.js"></script> -->
+	<script>
+		var loc=document.getElementByID("test");
+		var lon;
+		var lat;
+		function showLoc() {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(works, error);
+			} else {
+				loc.innerHTML = "Geolocation not supported.";
+			}
+		}
+		function works(loc) {
+			lat = loc.coords.latitude;
+			lon = loc.coords.longitude;
+			getMap(lat, lon);
+		}
+		function error() {
+			alert("Cannot get location");
+		}
+		function getMap(lat, lon) {
+			const map = L.map('map');
+			L.tileLayer('https://{s}tile.openstreetmap.org/{z}/{x}/{y}.png', {
+			maxZoom: 15,
+			attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+			}).addTo(map);
+
+			map.setView([48.8584, 2.2945], 16);
+			let user = L.marker([48.8584, 2.2945]).addTo(map);
+			//pop up for user location
+			user.bindPopup("Your location").openPopup();
+		}
+	</script>
+	</body>
+</html>

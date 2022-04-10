@@ -1,0 +1,295 @@
+:root {
+    --color: #ffffff;
+    --color2: #ddddde;
+    --color3: #cccccc;
+    --color4: #bbbbbb;
+    --color5: #aaaaaa;
+    --color6: #000000;
+}
+
+@font-face {
+    font-family: OregonFont;
+    src: url("OregonBold.ttf");
+}
+
+@font-face {
+    font-family: OswaldMed;
+    src: url("Oswald/static/Oswald-Medium.ttf");
+}
+
+@font-face {
+    font-family: OswaldLight;
+    src: url("Oswald/static/Oswald-Light.ttf");
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    background-color: var(--color, red);
+    font-family: OswaldLight;
+    font-size: 18px;
+    color: var(--color6, red);
+}
+
+div.container {
+    width: 50%;
+    height: 100%;
+    /*margin: auto;
+    right: 0;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    justify-content: center;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    margin: auto;
+}
+
+div.navigation {
+    font-size: 15px;
+    background-color: white;
+    float: left;
+    width: 100%;
+    padding: 15px;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+div.title {
+    float: left;
+    font-size: 25px;
+    color: var(--color6);
+}
+
+h1 {
+    font-family: OswaldMed;
+    font-size: 45px;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+h2 {
+    font-size: 25px;
+    width: 100%;
+    text-align: center;
+}
+
+div.nameEntry {
+    margin: 5px;
+    /*text-align: center;
+    width: 100%;
+    margin-bottom: 10px;*/
+}
+
+input#textbox {
+    /*font-family: OregonFont;*/
+    max-width: max-content;
+    font-size: 15px;
+    background-color: var(--color);
+    /*border: 2px solid var(--color3);
+    box-shadow:inset 0 0 5px 5px #888;*/
+    border-radius: 3px;
+    margin: 3px;
+}
+
+input#myPassword {
+    /*font-family: OregonFont;*/
+    max-width: max-content;
+    font-size: 15px;
+    background-color: var(--color);
+    /*border: 2px solid var(--color3);
+    box-shadow:inset 0 0 5px 5px #888;*/
+    border-radius: 3px;
+    margin: 3px;
+}
+
+select {
+    max-width: max-content;
+    font-size: 15px;
+    background-color: var(--color);
+    border: 2px solid var(--color3);
+    border-radius: 3px;
+    margin: 3px;
+}
+
+p {
+    display: block;
+    font-size: 18px;
+    margin: 5px;
+}
+
+a {
+    display: block;
+    font-size: 18px;
+    margin: 5px;
+    color: black;
+}
+
+div.column {
+    padding: 5px;
+    margin: 5px;
+    border: 2px solid var(--color);
+    border-radius: 3px;
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 4px 8px 0 rgba(0, 0, 0, 0.19);
+    /*margin-bottom: 10px;
+    background-color: var(--color2, red); */
+}
+
+label {
+    display: inline-block;
+    width: 150px;
+}
+
+div.header img {
+    float: right;
+    width: 110px;
+    height: 75px;
+    padding-left: 10px;
+}
+  
+div.header h1 {
+    position: relative;
+    display: inline;
+    top: 18px;
+    left: 0px;
+}
+
+div.header {
+    display: inline;
+    margin-bottom: 5px;
+}
+
+@media screen and (max-width: 300px) {
+    span.psw {
+       display: block;
+       float: none;
+    }
+    .cancelbtn {
+       width: 100%;
+    }
+  }
+
+button {
+    background-color: blue; /* Green */
+    border: none;
+    color: white;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    width: 100%;
+    border: 2px solid blue;
+    border-radius: 3px;
+    font-family: OswaldMed;
+    justify-content: center;
+    margin-top: 10px;
+    /*margin-bottom: 5px;*/
+}
+
+a:link, a:visited {
+    background-color: white;
+    font-family: OswaldLight;
+    /*color: var(--color4);*/
+    font-size: 18px;
+    /*width: 1000%;*/
+    border: 2px solid white;
+    border-radius: 3px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    justify-content: center;
+    margin-top: 10px;
+    margin-bottom: 5px;
+}
+  
+a:hover, a:active {
+    background-color: #FFD700;
+    border: 2px solid #FFD700;
+    border-radius: 3px;
+    color: black;
+}
+
+input[type="checkbox"] {
+    margin-right: 5px;
+}
+
+button:active {
+    background-color: #FFD700;
+    border: 2px solid #FFD700;
+    border-radius: 3px;
+    color: black;
+}
+
+div.links {
+    float: right;
+    padding-right: 20px;
+}
+
+div.link {
+    float: left;
+    font-size: 25px;
+    margin-left: 15px;
+    color: black;
+}
+
+
+
+
+
+/* The sidepanel menu */
+.sidepanel {
+    height: 250px; /* Specify a height */
+    width: 0; /* 0 width - change this with JavaScript */
+    position: fixed; /* Stay in place */
+    z-index: 1; /* Stay on top */
+    top: 0;
+    left: 0;
+    background-color: #111; /* Black*/
+    overflow-x: hidden; /* Disable horizontal scroll */
+    padding-top: 60px; /* Place content 60px from the top */
+    transition: 0.5s; /* 0.5 second transition effect to slide in the sidepanel */
+  }
+  
+  /* The sidepanel links */
+  .sidepanel a {
+    padding: 8px 8px 8px 32px;
+    text-decoration: none;
+    font-size: 25px;
+    color: #818181;
+    display: block;
+    transition: 0.3s;
+  }
+  
+  /* When you mouse over the navigation links, change their color */
+  .sidepanel a:hover {
+    color: #f1f1f1;
+  }
+
+  /* Position and style the close button (top right corner) */
+.sidepanel .closebtn {
+    position: absolute;
+    top: 0;
+    right: 25px;
+    font-size: 36px;
+    margin-left: 50px;
+  }
+  
+  /* Style the button that is used to open the sidepanel */
+  .openbtn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: #111;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+  }
+  
+  .openbtn:hover {
+    background-color: #444;
+  }

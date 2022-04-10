@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf=8">
+		<title>Runner++ Geolocation </title>
+	</head>
+	<body>
+		<p> Click 'OK' button to show your location. </p>
+		<button onclick="showMap()">OK</button>
+		<p id="test"></p>
+
+	<script>
+		var loc=document.getElementById("test");
+		var lon;
+		var lat;
+		function showMap() {
+			if (navigator.geolocation) {
+				navigator.geolocation.getCurrentPosition(showCurrent);
+			} else {
+				loc.innerHTML = "Geolocation is not supported by this browser.";
+			}
+		}
+
+		function showCurrent(pos) {
+			lat = pos.coords.latitude;
+			lon = pos.coords.longitude;
+			loc.innerHTML = "Lat: " + lat + " Long: " + lon;	
+		}
+	</script>
+
+	</body>
+	</html>

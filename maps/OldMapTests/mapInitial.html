@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Runner++ Geolocation - Leaflet</title>
+		<meta charset="utf=8">
+		<meta name="viewport" content="width=device-width, initial-scale=1" >
+		<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin=""/>
+		<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+		<style>
+			html, body { height: 100%; margin: 0; } .leaflet-container {height: 400px; width: 600px; max-width: 100%; max-height: 100%; }
+		</style>
+	</head>
+	<body>
+		<p> Show map of your location. </p>
+		<button onclick="showLoc()">Show Map</button>
+		<p id="test"></p>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+		<div id="map" style="height: 400px"></div>
+		
+		<!-- <script src="script.js"></script> -->
+
+		<script>
+			var loc=document.getElementByID("test");
+			var lon;
+			var lat;
+			function showLoc() {
+				if (navigator.geolocation) {
+					navigator.geolocation.getCurrentPosition(works, error);
+				} else {
+					loc.innerHTML = "Geolocation not supported.";
+				}
+			}
+			function works(loc) {
+				lat = loc.coords.latitude;
+				lon = loc.coords.longitude;
+				getMap(lat, lon);
+			}
+			function error() {
+				alert("Cannot get location");
+			}
+			function getMap(lat, lon) {
+				var map = L.map("map").setView([lat, lon], 16);
+				var marker = L.marker([lat, lon]).addTo(map);
+				L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+					maxZoom: 25,
+					id: 'mapbox/streets-v11',
+					tileSize: 512,
+					zoomOffset: -1,
+					accessToken: 'pk.eyJ1IjoiZHZpbnRpIiwiYSI6ImNrend1enYxdjg5c3oybm5rdnRsNzAyMHIifQ.wpv77ZIRfk3mI1gyqoOSAg'
+				}).addTo(map);
+				L.tilelLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+					maxZoom: 19,
+					attribution: '&copy; <a href="https://openstreetmap.org/copyright">OpenStreetMap contributors</a>'
+				}).addTo(map);
+			}
+
+		</script>
+	</body>
+</html>
