@@ -50,14 +50,20 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
 	} else {
 		echo mysqli_error($db);
 	}
-	$query1 = $db->prepare("SELECT uID, uName FROM User WHERE pass=? AND email= ?");
+	$query1 = $db->prepare("SELECT fName, lName, uName, gender, email, uID, position, imagePath FROM User WHERE pass=? AND email= ?");
 	$query1->bind_param('ss', $pw, $email);
 	
-	if($query->execute()){
-		mysqli_stmt_bind_result($query1, $res_uID, $res_uName);
+	if($query1->execute()){
+		mysqli_stmt_bind_result($query1, $res_fName, $res_lName, $res_uName, $res_gender, $res_email, $res_uID, $res_position, $res_imagePath);
 		if($query1->fetch()) {
 			$_SESSION['uName'] = $res_uName;
 			$_SESSION['uID'] = $res_uID;
+			$_SESSION['fName'] = $res_fName;
+			$_SESSION['lName'] = $res_lName;
+			$_SESSION['gender'] = $res_gender;
+			$_SESSION['email'] = $res_email;
+			$_SESSION['position'] = $res_position;
+			$_SESSION['imagePath'] = $res_imagePath;
 		}
 	} else {
 		echo mysqli_error($db);

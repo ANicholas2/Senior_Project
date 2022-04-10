@@ -58,7 +58,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <div class="w3-container w3-center">
         <hr class="w3-grey">
 
-        <select class="w3-select w3-border w3-margin-bottom" style="width: 100%" name="option">
+        <select class="w3-select w3-border w3-margin-bottom" style="width: 100%" name="message">
 	<option value="" disabled selected>Choose a message</option>
 <?php
 	$query="SELECT nID, Message FROM Notify";
@@ -69,10 +69,6 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		}
 	}
 ?>
-	    <!--<option value="1">On my way! </option>
-            <option value="2">Here </option>
-            <option value="3">Hello </option>
-            <option value="4">Thank you! </option>-->
         </select></br>
         <a href="inbox.php" <button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-hover-green" style="width: 100%;" onclick="">Send 
             <i class="fa-solid fa-paper-plane"></i></button></a>

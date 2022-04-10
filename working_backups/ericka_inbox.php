@@ -34,8 +34,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 <body>
 
 <!-- page container - needed for submit -->
-<form action="phpMessaging.php" method="POST">
-<!--class="w3-container w3-card-4 w3-text-metro-dark-blue w3-margin">-->
+<form action="phpMessaging.php" method="POST" class="w3-container w3-card-4 w3-text-metro-dark-blue w3-margin">
 
     <!-- Output Container -->
     <div class="w3-container w3-center w3-padding-16" style="height: 75%">
@@ -76,73 +75,6 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
         </select></br>
         <!--a href="inbox.php"--> <button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-hover-green" style="width: 100%;" type="submit">Send 
             <i class="fa-solid fa-paper-plane"></i></button><!--</a>-->
-<!--</form>-->
-<?php
-	$facName = $db->prepare("SELECT fName, lName FROM Faculty WHERE fID=?");
-	$facName->bind_param('i', $_SESSION['fID']);
-	if($facName->execute()) {
-		mysqli_stmt_bind_result($facName, $first, $last);
-		if($facName->fetch()) {
-			$fac_fName = $first;
-			$fac_lName = $last;
-		}
-	}
-	echo $fac_fName." ".$fac_lName; //works
-	var_dump($_SESSION['uID']);
-
-	$stuName = $db->prepare("SELECT fName, lName FROM User WHERE uID=?");
-	echo "prepare";
-	$stuName->bind_param('i', $_SESSION['uID']);
-	echo "bind";	
-	if($stuName->execute()) {
-		mysqli_stmt_bind_result($stuName, $first, $last);
-		if($stuName->fetch()) {
-			$stu_fName = $first;
-			$stu_lName = $last;
-		}
-	}
-	echo $stu_fName." ".$stu_lName; //doesntwork
-	
-
-	$walkID = $_SESSION['walkID'];
-	$increment = 1;
-	$queryn = $db->prepare("SELECT nID FROM Walk".$walkID." WHERE messageID=:mID");
-	//$queryn->bind_param('i', $increment);
-	//$increment++;
-	if($queryn->execute([':mID' => $increment])) {
-		$increment++;
-		mysqli_stmt_bind_result($queryn, $notif);
-		if($queryn->fetch()) {
-			$nID = $notif;
-		}
-	}	
-	
-	/*$sent = $db->prepare("SELECT Message FROM Notify WHERE nID=?");
-	$sent->bind_param('i', (int)$nID);
-	if($sent->execute()) {
-		mysqli_stmt_bind_result($sent, $res_mess);
-		if($sent->fetch()) {
-			$mess = $res_mess;
-			if(_SESSION['position'] == "Student") {
-				echo $stu_fName." ".$stu_lName." sent to ".$fac_fName." ".$fac_lName.": ".$message." \n";
-			}
-			if(_SESSION['position'] == "Faculty") {
-				echo $fac_fName." ".$fac_lName." sent to ".$stu_fName." ".$stu_lName.": ".$message." \n";
-			}
-		}
-	}*/
-	var_dump($nID);
-	$querySent = $db->prepare("SELECT Message FROM Notify WHERE nID=?");
-	$querySent->bind_param('i', $nID);
-	if($querySent->execute()) {
-		mysqli_stmt_bind_result($querySent, $res_mess);
-		if($querySent->fetch()) {
-			$messageSent = $res_mess;
-		}
-	}
-//	echo $_POST['message'];
-	echo $messageSent;
-?>
 
     </div>
 </form>

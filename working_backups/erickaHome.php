@@ -78,7 +78,6 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 	$uID = $_SESSION['uID'];
 	$fID = $_SESSION['fID'];
 	//var_dump($fID);
-	//var_dump($_SESSION['walkID']);
 	
 	$query2 = $db->prepare("SELECT fName, lName, gender FROM Faculty WHERE fID=?");
 	$query2->bind_param('i', $fID);
@@ -88,7 +87,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 			$fname=$res_first;
 			$lname=$res_last;
 			$gender=$res_gen;
-			echo "Currently connected with: ".$fname." ".$lname." (".$gender.")";
+			echo "Connected with: ".$fname." ".$lname." (".$gender.")";
 		}
 	} else { echo mysqli_error($db); }
  

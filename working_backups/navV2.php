@@ -5,7 +5,7 @@
   <a href="homeV2.php" class="w3-bar-item w3-button w3-metro-dark-blue"><img src="csub_logoV2.png" style="height:26px;">
   <!--<a href="" class="w3-bar-item w3-button w3-button-left w3-leftbar w3-border-white"></i>@tanderson</a>-->
   <a href="logout.php" class="w3-bar-item w3-button w3-hide-small w3-right">Log Out</a>  
-  <a href="messages.php" class="w3-bar-item w3-button w3-hide-small w3-right">Inbox</a>
+  <a href="inbox.php" class="w3-bar-item w3-button w3-hide-small w3-right">Inbox</a>
   <!-- <a href="profileSettings.php" class="w3-bar-item w3-button w3-hide-small w3-right">Settings</a> -->
   <a href="myProfile.php" class="w3-bar-item w3-button w3-hide-small w3-right">My Profile</a>
   <a href="javascript:void(0)" class="w3-bar-item w3-button w3-large w3-right w3-hide-large w3-hide-medium" onclick="myFunction()">&#9776;</a>
