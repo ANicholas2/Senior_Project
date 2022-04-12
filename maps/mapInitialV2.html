@@ -55,16 +55,10 @@
 			<i class="fa fa-envelope"></i></button></a>
 	</div>
 	<script>
-		//Variables
-		var lon, lat;
-		var map, marker, myIcon;
-		var popUp;
-		
-		//Variables for Map Bounds
-		var northEast = L.latLng(35.351412, -119.101106),
-			southWest = L.latLng(35.348037, -119.107567);
-		var csubBounds = L.latLngBounds(northEast, southWest);
-		
+		// Variables
+		var map, marker;
+		var lat, lon;
+
 		function showLoc() {
 			if (navigator.geolocation) {
 				// Gets the current location of the user every second
@@ -84,7 +78,7 @@
 			alert("Cannot get location");
 		}
 		function onMapClick(e) {
-			popUp = L.popup();
+			var popUp = L.popup();
 			var newMarker = new L.marker(e.latlng, {
 				draggable: true,
 				autoPan: true
@@ -100,8 +94,15 @@
 				.bindPopup('You clicked the map at ' + e.latlng.toString()).openPopup();
 		}
 		function getMap(lat, lon) {
+			//Variables for Map Bounds
+			var northEast = L.latLng(35.351412, -119.101106),
+				southWest = L.latLng(35.348037, -119.107567),
+				csubBounds = L.latLngBounds(northEast, southWest);
+
 			// Sets the Map View along with the Initial Zoom Level
-            map = L.map("map").setView([lat, lon], 17);
+            map = L.map("map", {
+				maxBounds: csubBounds
+			}).setView([lat, lon], 17);
 			
 			// Adds the Map Tile Layer
 			var baseLayers = {
@@ -112,13 +113,14 @@
 					id: 'mapbox/streets-v11',
 					tileSize: 512,
 					zoomOffset: -1,
-					fitBounds: csubBounds,
 					accessToken: 'pk.eyJ1IjoiZHZpbnRpIiwiYSI6ImNrend1enYxdjg5c3oybm5rdnRsNzAyMHIifQ.wpv77ZIRfk3mI1gyqoOSAg'
 				}),
 				"Satellite": L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
 					attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
 					minZoom: 16,
-					maxZoom: 19
+					maxZoom: 19,
+					tileSize: 512,
+					zoomOffset: -1
 				})
 			};
 
@@ -127,14 +129,15 @@
 
 			// Adds the Layer Switch to the map
 			L.control.layers(baseLayers, null, {
-				collapsed: false
+				collapsed: true
 			}).addTo(map);
 
 			// Fit Bounds
+			//map.fitBounds(csubBounds);
 
             // User Marker for Student Icon
             // Student Icon
-            myIcon = L.icon({
+            var myIcon = L.icon({
                 iconUrl: 'maps/CSUBMark.png',
                 iconSize: [40, 50],
                 iconAnchor: [22, 94],
