@@ -27,7 +27,7 @@ if($_SERVER["REQUEST_METHOD"]=="POST") {
 	} else {
 		echo mysqli_error($db);
 	}
-	header("Location: ericka_inbox.php");
+	header("Location: inbox.php");
 	exit();
 } else {
 	echo "Invalid requestion method";

@@ -85,7 +85,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 /*	$increment++;
 	var_dump($increment);
  */
-/*	$facName = $db->prepare("SELECT fName FROM Faculty WHERE fID=?");
+	$facName = $db->prepare("SELECT fName FROM Faculty WHERE fID=?");
 	$facName->bind_param('i', $_SESSION['fID']);
 	if($facName->execute()) {
 		mysqli_stmt_bind_result($facName, $first);
@@ -94,7 +94,8 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		}
 	}
 	echo $fac_fName; //works
-	
+	$fac_fName->free();
+
 	$stuName = $db->prepare("SELECT fName FROM User WHERE uID=?");
 	$stuName->bind_param('i', $_SESSION['sID']);
 	if($stuName->execute()) {
@@ -108,7 +109,8 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		echo mysqli_error($db);
 	}
 	echo $stu_fName; //NOT work -- works without facName
-*/
+	$stu_fName->free();
+
 	/*$walkID = $_SESSION['walkID'];
 	var_dump($walkID);	
 	$queryn = $db->prepare("SELECT nID FROM Walk".$walkID." WHERE messageID=?");

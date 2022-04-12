@@ -12,7 +12,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <!DOCTYPE html>
     <html lang="en">
     <meta charset="UTF-8">
-    <title>Connect: Student</title>
+    <title>Location Information</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
     <link rel="stylesheet" href="https://www.w3schools.com/lib/w3-colors-metro.css">
@@ -41,7 +41,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 
     <div class="w3-container w3-center">
 	<select class="w3-select w3-border w3-margin-bottom w3-margin-top" style="width: 90%" name="faculty">
-	<option value="" disabled selected>Choose Walker:</option>
+	<option value="" disabled selected>Choose PickUp Location:</option>
 <?php
 	$query="SELECT fID, fName, lName, gender from Faculty WHERE isAvailable=1";
 	$result=mysqli_query($db, $query);
@@ -57,7 +57,6 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		<?php
 			//echo "prequery1";
 			//var_dump($_SESSION['uID']);
-			$uID = $_SESSION['uID'];
 			$fID = $_SESSION['fID'];
 			//var_dump($fID);
 			//var_dump($_SESSION['walkID']);

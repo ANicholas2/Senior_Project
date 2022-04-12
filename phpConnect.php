@@ -12,7 +12,7 @@ if(mysqli_connect_errno()) {
 }
 
 if($_SERVER['REQUEST_METHOD'] == "POST") {
-	$uID = (int)$_SESSION['uID'];
+	$sID = (int)$_SESSION['sID'];
 	//var_dump($uID);
 	$fID = (int)$_POST['faculty'];  //partnerID 
 	$_SESSION['fID'] = (int)$_POST['faculty'];  //partnerID 
