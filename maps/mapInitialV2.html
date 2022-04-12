@@ -56,8 +56,7 @@
 	</div>
 	<script>
 		// Variables
-		var map, marker;
-		var lat, lon;
+		var map;
 
 		function showLoc() {
 			if (navigator.geolocation) {
@@ -69,37 +68,45 @@
 				loc.innerHTML = "Geolocation not supported.";
 			}
 		}
+
 		function works(loc) {
-			lat = loc.coords.latitude;
-			lon = loc.coords.longitude;
+			var lat = loc.coords.latitude;
+			var lon = loc.coords.longitude;
 			getMap(lat, lon);
 		}
+
 		function error() {
 			alert("Cannot get location");
 		}
-		function onMapClick(e) {
+
+		var newMarker;
+		function addMarker(e) {
 			var popUp = L.popup();
-			var newMarker = new L.marker(e.latlng, {
+			newMarker = new L.Marker(e.latlng, {
 				draggable: true,
-				autoPan: true
+				autoPan: true,
+				riseOnHover: true
 			});
+			map.addLayer(newMarker);
+			newMarker.bindPopup("<b>You are here!</b><br>Latitude: " + e.latlng.lat + "<br>Longitude: " + e.latlng.lng).openPopup();
 			newMarker.on('dragend', function(e) {
-				newMarker = e.target;
-				var position = newMarker.getLatLng();
-				newMarker.setLatLng(position, {
-					draggable: true
-				});
+				popUp.setLatLng(e.target.getLatLng());
+				popUp.setContent("<b>You are here!</b><br>Latitude: " + e.target.getLatLng().lat + "<br>Longitude: " + e.target.getLatLng().lng);
+				newMarker.bindPopup(popUp).openPopup();
 			});
-			newMarker.addTo(map)
-				.bindPopup('You clicked the map at ' + e.latlng.toString()).openPopup();
 		}
+
+		function removeMarker(e) {
+			map.removeLayer(newMarker);
+		}
+
 		function getMap(lat, lon) {
-			//Variables for Map Bounds
+			// Bounding Box for the map
 			var northEast = L.latLng(35.351412, -119.101106),
 				southWest = L.latLng(35.348037, -119.107567),
 				csubBounds = L.latLngBounds(northEast, southWest);
 
-			// Sets the Map View along with the Initial Zoom Level
+			// Sets the initial Map View
             map = L.map("map", {
 				maxBounds: csubBounds
 			}).setView([lat, lon], 17);
@@ -132,7 +139,7 @@
 				collapsed: true
 			}).addTo(map);
 
-			// Fit Bounds
+			// Zooms the map to the bounding box
 			//map.fitBounds(csubBounds);
 
             // User Marker for Student Icon
@@ -144,17 +151,20 @@
                 popupAnchor: [-3, -76]
             });
 
-            marker = L.marker([lat, lon], {icon: myIcon}).addTo(map)
+            var marker = L.marker([lat, lon], {icon: myIcon}).addTo(map)
                 .bindPopup('<b>User Location</b>').openPopup();
             
             //Start at Bakersfield after User Marker is set
-            map.panTo(new L.LatLng(35.350056, -119.103599));
+            //map.panTo(new L.LatLng(35.350056, -119.103599));
             
-            // On double click, add a new marker
-            map.on('dblclick', onMapClick);
-
-            // Disable Double Click Zoom
+			// Disable Double Click Zoom
             map.doubleClickZoom.disable();
+
+            // On double click, add a new marker
+            map.on('dblclick', addMarker);
+
+			// On click, remove marker
+			//map.on('click', removeMarker);
 		}
 		</script>
 	</body>
