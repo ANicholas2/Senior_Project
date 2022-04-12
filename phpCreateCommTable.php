@@ -15,14 +15,11 @@ var_dump($walkID);
 	$create = "CREATE TABLE Walk".$walkID." (
 		messageID int NOT NULL AUTO_INCREMENT, 
 		fID int,
-		uID int,
+		sID int,
 		nID int,
-		dropOff datetime,
-		status varchar(20) DEFAULT 'Incomplete',
-		report varchar(1024),
 		PRIMARY KEY (messageID),
 		FOREIGN KEY (fID) REFERENCES Faculty(fID),
-		FOREIGN KEY (uID) REFERENCES User(uID),
+		FOREIGN KEY (sID) REFERENCES User(uID),
 		FOREIGN KEY (nID) REFERENCES Notify(nID) )";
 //echo "create statement ^^";
 if($db->query($create)) {

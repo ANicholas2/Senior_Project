@@ -18,8 +18,8 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
 	$_SESSION['fID'] = (int)$_POST['faculty'];  //partnerID 
 	//var_dump($fID);
 
-	$query = $db->prepare("INSERT INTO Partnered_With (uID, fID) VALUES (?,?)");
-	$query->bind_param('ii', $uID, $fID);
+	$query = $db->prepare("INSERT INTO Partnered_With (sID, fID) VALUES (?,?)");
+	$query->bind_param('ii', $sID, $fID);
 	if($query->execute()) {
 	} else {
 		echo mysqli_error($db);

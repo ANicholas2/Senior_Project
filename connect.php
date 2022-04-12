@@ -57,7 +57,6 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		<?php
 			//echo "prequery1";
 			//var_dump($_SESSION['uID']);
-			$uID = $_SESSION['uID'];
 			$fID = $_SESSION['fID'];
 			//var_dump($fID);
 			//var_dump($_SESSION['walkID']);

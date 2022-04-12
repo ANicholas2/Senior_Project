@@ -11,7 +11,7 @@ if(mysqli_connect_errno()) {
 	exit();
 }
 
-$uID = $_SESSION['uID'];
+$sID = $_SESSION['sID'];
 $fID = $_SESSION['fID'];
 $walkID = $_SESSION['walkID'];
 
@@ -20,8 +20,8 @@ $walkID = $_SESSION['walkID'];
 if($_SERVER["REQUEST_METHOD"]=="POST") {
 	$nID = $_POST['message'];
 	
-	$insert_mess = $db->prepare("INSERT INTO Walk".$walkID." (fID, uID, nID) VALUES (?, ?, ?)");
-	$insert_mess->bind_param('iii', $fID, $uID, $nID);
+	$insert_mess = $db->prepare("INSERT INTO Walk".$walkID." (fID, sID, nID) VALUES (?, ?, ?)");
+	$insert_mess->bind_param('iii', $fID, $sID, $nID);
 	if($insert_mess->execute()) {
 	} else {
 		echo mysqli_error($db);

@@ -42,17 +42,23 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
         $_SESSION['uName'] = $result_uname;
         $_SESSION['uID'] = $result_uID;
         $_SESSION['fName'] = $result_fName;
-	    $_SESSION['lName'] = $result_lName;
-	    $_SESSION['gender'] = $result_gender;
-	    $_SESSION['email'] = $result_email;
-	    $_SESSION['position'] = $result_position;
-	    $_SESSION['imagePath'] = $result_imagePath;
+	$_SESSION['lName'] = $result_lName;
+	$_SESSION['gender'] = $result_gender;
+	$_SESSION['email'] = $result_email;
+	$_SESSION['position'] = $result_position;
+	$_SESSION['imagePath'] = $result_imagePath;
 	    //echo $_SESSION['imagePath'];
-	    
-	    if ($result_position == "Faculty") {
-		$_SESSION['fID'] = $result_uID;
+
+	    echo $_SESSION['position'];
+	    if ($_SESSION['position'] == "Faculty") {
+		    $_SESSION['fID'] = $_SESSION['uID'];
+		    echo "FACULTY: ".$_SESSION['fID'];
 	    }
-        header("Location: connect.php");
+	    if ($_SESSION['position'] == "Student") {
+		$_SESSION['sID'] = $_SESSION['uID'];
+		echo "Student: ".$_SESSION['sID'];
+	    }
+      	header("Location: connect.php");
         exit();
     } else {
         header("Location: indexV2.php?error=Incorrect Username and/or password");

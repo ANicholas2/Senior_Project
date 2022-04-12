@@ -78,38 +78,44 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
             <i class="fa-solid fa-paper-plane"></i></button><!--</a>-->
 <!--</form>-->
 <?php
-	$facName = $db->prepare("SELECT fName, lName FROM Faculty WHERE fID=?");
+	var_dump($_SESSION['fID']);
+	var_dump($_SESSION['sID']);
+	$increment = 1;
+	var_dump($increment);
+	$increment++;
+	var_dump($increment);
+
+	//select in one statement for both stu and fac ... OR?
+	$facName = $db->prepare("SELECT fName FROM Faculty WHERE fID=?");
 	$facName->bind_param('i', $_SESSION['fID']);
 	if($facName->execute()) {
-		mysqli_stmt_bind_result($facName, $first, $last);
+		mysqli_stmt_bind_result($facName, $first);
 		if($facName->fetch()) {
 			$fac_fName = $first;
-			$fac_lName = $last;
 		}
 	}
-	echo $fac_fName." ".$fac_lName; //works
-	var_dump($_SESSION['uID']);
-
-	$stuName = $db->prepare("SELECT fName, lName FROM User WHERE uID=?");
-	echo "prepare";
-	$stuName->bind_param('i', $_SESSION['uID']);
-	echo "bind";	
+	echo $fac_fName; //works
+	
+	$stuName = $db->prepare("SELECT fName FROM User WHERE uID=?");
+	$stuName->bind_param('i', $_SESSION['sID']);
 	if($stuName->execute()) {
-		mysqli_stmt_bind_result($stuName, $first, $last);
+		mysqli_stmt_bind_result($stuName, $first);
 		if($stuName->fetch()) {
 			$stu_fName = $first;
-			$stu_lName = $last;
+			echo $stu_fName;
 		}
 	}
-	echo $stu_fName." ".$stu_lName; //doesntwork
-	
+	else {
+		echo mysqli_error($db);
+	}
+	echo $stu_fName; //NOT work
 
+/*
 	$walkID = $_SESSION['walkID'];
-	$increment = 1;
-	$queryn = $db->prepare("SELECT nID FROM Walk".$walkID." WHERE messageID=:mID");
+	$queryn = $db->prepare("SELECT nID FROM Walk".$walkID." WHERE messageID=".$increment);
 	//$queryn->bind_param('i', $increment);
 	//$increment++;
-	if($queryn->execute([':mID' => $increment])) {
+	if($queryn->execute() {
 		$increment++;
 		mysqli_stmt_bind_result($queryn, $notif);
 		if($queryn->fetch()) {
@@ -117,7 +123,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		}
 	}	
 	
-	/*$sent = $db->prepare("SELECT Message FROM Notify WHERE nID=?");
+	$sent = $db->prepare("SELECT Message FROM Notify WHERE nID=?");
 	$sent->bind_param('i', (int)$nID);
 	if($sent->execute()) {
 		mysqli_stmt_bind_result($sent, $res_mess);
@@ -130,8 +136,8 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 				echo $fac_fName." ".$fac_lName." sent to ".$stu_fName." ".$stu_lName.": ".$message." \n";
 			}
 		}
-	}*/
-	var_dump($nID);
+	}
+	/*var_dump($nID);
 	$querySent = $db->prepare("SELECT Message FROM Notify WHERE nID=?");
 	$querySent->bind_param('i', $nID);
 	if($querySent->execute()) {
@@ -141,9 +147,27 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		}
 	}
 //	echo $_POST['message'];
-	echo $messageSent;
+	echo $messageSent;*/
+	/*echo "hey";
+	$increment = 0; 
+	$everything = "SELECT fName FROM Faculty WHERE fID=?; SELECT fName FROM User WHERE uID=?; SELECT nID FROM Walk".$walkID." WHERE messageID=?; SELECT Message FROM Notify WHERE nID=?;";
+	$everything->bind_param("iiii", $fID, $sID, $increment, $nID);
+	$db->multi_query($everything);
+	if ($result = $db->store_result()) {
+		var_dump($result->fetch_all(MYSQLI_ASSOC));
+		$result->free();
+	}*/
+/*if($everything->execute()) {
+		$increment++;
+		mysqli_stmt_bind_result($everything, $res_fName, $res_sName, $res_nID, $res_mess);
+		if($everything->fetch()) {
+			$facName = $res_fName;
+			$stuName = $res_sName;
+			$nID = $res_nID;
+			$mess = $res_mess;
+		}
+	}*/
 ?>
-
     </div>
 </form>
 </body>
