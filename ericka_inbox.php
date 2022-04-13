@@ -34,7 +34,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 <body>
 
 <!-- page container - needed for submit -->
-<form action="phpMessaging.php" method="POST">
+<!--<form action="phpMessaging.php" method="POST">-->
 <!--class="w3-container w3-card-4 w3-text-metro-dark-blue w3-margin">-->
 
     <!-- Output Container -->
@@ -53,8 +53,36 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 
         <!-- Singular Message Container  -->
         <div class="w3-panel w3-leftbar w3-left-align w3-round-xlarge w3-metro-dark-blue" style="font-style: italic;">
-            <p>On my way!</p>
+            <p>On my way</p>
         </div>
+
+<?php
+	var_dump($_SESSION['walkID']);
+	echo "SELECT nID FROM Walk".$_SESSION['walkID'];
+	$query1="SELECT nID FROM Walk".$_SESSION['walkID'];
+	if($result1=$db->query($query1)) {
+		while($row1=$result1->fetch_assoc()) {
+			$nID=$row1["nID"];
+		$sent = $db->prepare("SELECT Message FROM Notify WHERE nID=?");
+		$sent->bind_param('i', $nID);
+		if($sent->execute()) {
+			mysqli_stmt_bind_result($sent, $res_mess);
+			if($sent->fetch()) {
+			$mess = $res_mess;
+				if($_SESSION["position"] == "Faculty") {
+					echo '<div class="w3-panel w3-leftbar w3-left-align w3-round-xlarge w3-metro-dark-blue" style="font-style: italic;">';
+					echo '<p>' .$mess. '</p>';
+					echo '</div>';
+				} else {
+					echo '<div class="w3-panel w3-rightbar w3-right-align w3-round-xlarge w3-metro-yellow" style="font-style: italic; position: relative; right: 0%; width: 50%;">';
+					echo '<p>' .$mess. '</p>';
+					echo '</div>';
+				}
+			}
+		}
+		}
+	}
+		?>
 
     </div>   
 
@@ -63,84 +91,88 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
         <hr class="w3-grey">
 
         <select class="w3-select w3-border w3-margin-bottom" style="width: 100%" name="message">
-	<option value="" disabled selected>Choose a message</option>
-<?php
-	$query="SELECT nID, Message FROM Notify";
-	$result=mysqli_query($db, $query);
-	if (mysqli_num_rows($result)>0) {
-		while ($rows=mysqli_fetch_assoc($result)) {
-			echo "<option value='".$rows["nID"]."'>".$rows["Message"]."</option>";
-		}
-	}
-?>
-        </select></br>
-        <!--a href="inbox.php"--> <button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-hover-green" style="width: 100%;" type="submit">Send 
-            <i class="fa-solid fa-paper-plane"></i></button><!--</a>-->
-<!--</form>-->
-<?php
-	var_dump($_SESSION['fID']);
-	var_dump($_SESSION['sID']);
-	$increment = 1;
-	var_dump($increment);
-/*	$increment++;
-	var_dump($increment);
- */
-	$facName = $db->prepare("SELECT fName FROM Faculty WHERE fID=?");
-	$facName->bind_param('i', $_SESSION['fID']);
-	if($facName->execute()) {
-		mysqli_stmt_bind_result($facName, $first);
-		if($facName->fetch()) {
-			$fac_fName = $first;
-		}
-	}
-	echo $fac_fName; //works
-	$fac_fName->free();
-
-	$stuName = $db->prepare("SELECT fName FROM User WHERE uID=?");
-	$stuName->bind_param('i', $_SESSION['sID']);
-	if($stuName->execute()) {
-		mysqli_stmt_bind_result($stuName, $first);
-		if($stuName->fetch()) {
-			$stu_fName = $first;
-			echo $stu_fName;
-		}
-	}
-	else {
-		echo mysqli_error($db);
-	}
-	echo $stu_fName; //NOT work -- works without facName
-	$stu_fName->free();
-
-	/*$walkID = $_SESSION['walkID'];
-	var_dump($walkID);	
-	$queryn = $db->prepare("SELECT nID FROM Walk".$walkID." WHERE messageID=?");
-	$queryn->bind_param('i', $increment);
-	if($queryn->execute() {
-		$increment++;
-		mysqli_stmt_bind_result($queryn, $notif);
-		if($queryn->fetch()) {
-			$nID = $notif;
-		}
-	}	
-	var_dump($nID);
-	 */
-	$sent = $db->prepare("SELECT Message FROM Notify WHERE nID=?");
-	$sent->bind_param('i', $_SESSION['nID']);
-	if($sent->execute()) {
-		mysqli_stmt_bind_result($sent, $res_mess);
-		if($sent->fetch()) {
-			$mess = $res_mess;
-		/*	if(_SESSION['position'] == "Student") {
-				echo $stu_fName." ".$stu_lName." sent to ".$fac_fName." ".$fac_lName.": ".$message." \n";
+		<option value="" disabled selected>Choose a message:</option>
+		<?php
+			if($submit == 0) {
+				$query="SELECT nID, Message FROM Notify";
+				$result=mysqli_query($db, $query);
+				if (mysqli_num_rows($result)>0) {
+					while ($rows=mysqli_fetch_assoc($result)) {
+						echo "<option value='".$rows["nID"]."'>".$rows["Message"]."</option>";
+					}
+				}
 			}
-			if(_SESSION['position'] == "Faculty") {
-				echo $fac_fName." ".$fac_lName." sent to ".$stu_fName." ".$stu_lName.": ".$message." \n";
-			}*/
+		?>
+		</select></br>
+		<!--a href="inbox.php"--> <button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-hover-green" style="width: 100%;" type="submit">Send 
+			<i class="fa-solid fa-paper-plane"></i></button><!--</a>-->
+		<!--</form>-->
+		<?php
+		// var_dump($_SESSION['fID']);
+		// var_dump($_SESSION['sID']);
+		// $increment = 1;
+		// var_dump($increment);
+	/*	$increment++;
+		var_dump($increment);
+	*/
+		/*$query = $db->prepare("SELECT fName FROM Faculty WHERE fID=?");
+		$query->bind_param('i', $_SESSION['fID']);
+		if($query->execute()) {
+			mysqli_stmt_bind_result($query, $first);
+			if($query->fetch()) {
+				$fac_fName = $first;
+			}
 		}
-	}
-//	echo $_POST['message'];
-	echo $mess; //NOT work -- works by itself
-?>
+		echo $fac_fName; //works
+		
+		$query2 = $db->prepare("SELECT fName FROM User WHERE uID=?");
+		$query2->bind_param('i', $_SESSION['sID']);
+		if($query2->execute()) {
+			mysqli_stmt_bind_result($query2, $first);
+			if($query2->fetch()) {
+				$stu_fName = $first;
+				echo $stu_fName;
+			}
+		}
+		else {
+			echo mysqli_error($db);
+		}
+		echo $stu_fName; //NOT work -- works without facName
+	*/
+		/*$walkID = $_SESSION['walkID'];
+		var_dump($walkID);	
+		$queryn = $db->prepare("SELECT nID FROM Walk".$walkID." WHERE messageID=?");
+		$queryn->bind_param('i', $increment);
+		if($queryn->execute() {
+			$increment++;
+			mysqli_stmt_bind_result($queryn, $notif);
+			if($queryn->fetch()) {
+				$nID = $notif;
+			}
+		}	
+		var_dump($nID);
+		*/
+
+
+		// $sent = $db->prepare("SELECT Message FROM Notify WHERE nID=?");
+		// $sent->bind_param('i', $_SESSION['nID']);
+		// if($sent->execute()) {
+		// 	mysqli_stmt_bind_result($sent, $res_mess);
+		// 	if($sent->fetch()) {
+		// 		$mess = $res_mess;
+		// 	/*	if(_SESSION['position'] == "Student") {
+		// 			echo $stu_fName." ".$stu_lName." sent to ".$fac_fName." ".$fac_lName.": ".$message." \n";
+		// 		}
+		// 		if(_SESSION['position'] == "Faculty") {
+		// 			echo $fac_fName." ".$fac_lName." sent to ".$stu_fName." ".$stu_lName.": ".$message." \n";
+		// 		}*/
+		// 	}
+		// }
+	//	echo $_POST['message'];
+
+
+		// echo $mess; //NOT work -- works by itself
+	?>
     </div>
 </form>
 </body>

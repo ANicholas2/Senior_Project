@@ -25,14 +25,9 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <script src="https://kit.fontawesome.com/a6d0ff8634.js" crossorigin="anonymous"></script>
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
-    <!--<style>
-		html, body { height: 100%; width: 100%; margin: 0; } 
-		.leaflet-container { max-width: 100%; max-height: 100%; }
-		.leaflet-control-layers { text-align: left; }
-    </style>-->
-    <!--<script src="projectV2.js"></script>-->
+    <meta http-equiv="refresh" content="10">
     <body>
-<form action="phpConnect.php" method="POST" class="w3-container w3-text-metro-dark-blue">
+    <!--<form action="phpConnect.php" method="POST" class="w3-container w3-text-metro-dark-blue">-->
     <div class="w3-container w3-center w3-padding-16">    
 	<div class="w3-card w3-margin"> 
 		<div class="w3-container w3-metro-dark-blue">
@@ -40,12 +35,35 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		</div>
 
     <div class="w3-container w3-center">
-	<!-- <button class="w3-button w3-ripple w3-round-large w3-green w3-margin-bottom" style="width: 90%" type="submit">Wait for Connection</button> -->
-    <p>Wait for Connection...</p>
-	<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-margin-bottom w3-hover-green" style="width: 90%" type="submit">Home 
-        <i class="fa-solid fa-house-user"></i></button><!--</a>--></br>
+
+    <?php
+	$query = $db->prepare("SELECT walkID, sID From Partnered_With WHERE fID=?");
+	$query->bind_param('i', $_SESSION['fID']);
+	if($query->execute()) {
+		mysqli_stmt_bind_result($query, $wID, $stuID);
+		if($query->fetch()) {
+			$_SESSION['walkID'] = $wID;
+			$_SESSION['sID'] = $stuID;
+		}
+	}
+
+	if($_SESSION['sID'] > 0) {
+        // if connected
+        echo '<p>Connected!</p>';
+	    echo '<a href="homeFaculty.php"<button class="w3-button w3-round-large w3-metro-dark-blue w3-hover-green w3-margin-bottom" style="width: 90%" onclick="">Home
+            <i class="fa-solid fa-house-user"></i></button></a>';
+	} else { 
+        // if not connected
+        //include(meta.php);
+        echo '<p>Wait for Connection...</p>';
+        echo '<p><i class="w3-jumbo fa-solid fa-wifi"></i></p>';
+    }
+    ?>
+
+
+
     </div>
-</form>
+<!--</form>-->
 </body>
 </html>
 

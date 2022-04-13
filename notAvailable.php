@@ -18,7 +18,12 @@ if ($_SESSION['position'] == "Faculty") {
 		echo $fID." NOT available";
 	} else {
 		echo mysqli_error($db);
+	}/*
+	$del = $db->prepare("DELETE FROM Faculty WHERE fID=?");
+	$del->bind_param('i', $_SESSION['uID']);
+	if($del->execute()) {
 	}
+	else { echo mysqli_error($db);*/
 }
 header("Location: logout.php");
 ?>

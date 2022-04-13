@@ -15,6 +15,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
 	$sID = (int)$_SESSION['sID'];
 	//var_dump($uID);
 	$fID = (int)$_POST['faculty'];  //partnerID 
+	
 	$_SESSION['fID'] = (int)$_POST['faculty'];  //partnerID 
 	//var_dump($fID);
 
@@ -25,7 +26,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
 		echo mysqli_error($db);
 	}
 	$_SESSION['walkID'] = mysqli_insert_id($db);
-	
+
 /*	$create = $db->prepare("CREATE TABLE Walk? (
 		messageID int NOT NULL AUTO-INCREMENT, 
 		fID int,
