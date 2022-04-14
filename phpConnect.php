@@ -12,12 +12,12 @@ if(mysqli_connect_errno()) {
 }
 
 if($_SERVER['REQUEST_METHOD'] == "POST") {
-	$sID = (int)$_SESSION['sID'];
-	//var_dump($uID);
-	$fID = (int)$_POST['faculty'];  //partnerID 
+	$sID = $_SESSION['sID'];
+	var_dump($sID);
+	$fID = $_POST['faculty'];  //partnerID 
+	var_dump($fID);
 	
-	$_SESSION['fID'] = (int)$_POST['faculty'];  //partnerID 
-	//var_dump($fID);
+	$_SESSION['fID'] = $fID;  //partnerID 
 
 	$query = $db->prepare("INSERT INTO Partnered_With (sID, fID) VALUES (?,?)");
 	$query->bind_param('ii', $sID, $fID);
@@ -44,7 +44,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
 	}
  */
 	header("Location: phpCreateCommTable.php");
-	//header("Location: homeV2.php");
 	exit();
 } else {
 	echo "Invalid request method?";

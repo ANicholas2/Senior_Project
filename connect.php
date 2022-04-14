@@ -43,7 +43,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 	$result=mysqli_query($db, $query);
 	if (mysqli_num_rows($result)>0) {
 		while ($rows=mysqli_fetch_assoc($result)) {
-			echo "<option value=".$rows["fID"].">".$rows["fName"]." ".$rows["lName"]." (".$rows["gender"].") </option>";
+			echo "<option value=".$rows["fID"].">".$rows["fID"]." ".$rows["fName"]." ".$rows["lName"]." (".$rows["gender"].") </option>";
 		}
 	}
 	?>
@@ -65,7 +65,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 	
 	</select>
 
-	<select class="w3-select w3-border w3-margin-bottom" style="width: 90%" name="faculty">
+	<select class="w3-select w3-border w3-margin-bottom" style="width: 90%" name="dropOff">
 	<option value="" disabled selected>Choose Drop-Off:</option>
 
 	<?php
