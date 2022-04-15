@@ -12,14 +12,14 @@ if(mysqli_connect_errno()) {
 }
 
 if($_SERVER['REQUEST_METHOD'] == "POST") {
-	$uID = (int)$_SESSION['uID'];
+	$sID = (int)$_SESSION['sID'];
 	//var_dump($uID);
 	$fID = (int)$_POST['faculty'];  //partnerID 
 	$_SESSION['fID'] = (int)$_POST['faculty'];  //partnerID 
 	//var_dump($fID);
 
-	$query = $db->prepare("INSERT INTO Partnered_With (uID, fID) VALUES (?,?)");
-	$query->bind_param('ii', $uID, $fID);
+	$query = $db->prepare("INSERT INTO Partnered_With (sID, fID) VALUES (?,?)");
+	$query->bind_param('ii', $sID, $fID);
 	if($query->execute()) {
 	} else {
 		echo mysqli_error($db);

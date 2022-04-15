@@ -100,7 +100,7 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
 			echo mysqli_error($db);
 		}
 	}
-	header("Location: homeV2.php");
+	header("Location: indexV2.php");
 	exit();
 } else {
 	echo "Invalid request method?";

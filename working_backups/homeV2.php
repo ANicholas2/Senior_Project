@@ -10,7 +10,6 @@ require_once "navV2.php";
 if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 	//	$connected = 0;
 ?>
-
     <body>
     <!DOCTYPE html>
     <html lang="en">
@@ -28,84 +27,84 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
     <!--<style>
-	html, body { height: 100%; width: 100%; margin: 0; } 
-	.leaflet-container { max-width: 100%; max-height: 100%; }
-	.leaflet-control-layers { text-align: left; }
+		html, body { height: 100%; width: 100%; margin: 0; } 
+		.leaflet-container { max-width: 100%; max-height: 100%; }
+		.leaflet-control-layers { text-align: left; }
     </style>-->
     <!--<script src="projectV2.js"></script>-->
     <body>
-<form action="phpConnect.php" method="POST" class="w3-container w3-card-4 w3-text-metro-dark-blue w3-margin">
-    <div class="w3-container w3-center w3-padding-16">    
-	<div class="w3-card w3-margin"> 
-	    <div class="w3-container w3-metro-dark-blue">
-		<h4>Welcome @<?php echo $_SESSION['uName']; ?>!</h4>
-	    </div>
+	<div class="w3-container w3-text-metro-dark-blue">
+		<div class="w3-container w3-center w3-padding-16">    
+			<div class="w3-card w3-margin"> 
+				<div class="w3-container w3-metro-dark-blue">
+				<h4>Welcome @<?php echo $_SESSION['uName']; ?>!</h4>
+				</div>
 
-	    <!--<p> Show map of your location. </p>-->
-	    <div class="w3-container w3-center" id="mapBttnID"> 
-		<img src="full-map.jpg" style="height: 200px; width: 400px; max-width: 100%; max-height: 100%;" class="w3-margin-top"></br>
-		<!-- <button class="w3-button w3-round-large w3-metro-dark-blue w3-margin w3-hover-green" style="width: 60%;" onclick="showLoc()">Show Location 
-		    <i class="fa-solid fa-location-dot"></i></button> -->
-		<button class="w3-button w3-circle w3-xlarge w3-metro-dark-blue w3-margin" onclick="showLoc()">
-		    <i class="fa-solid fa-location-dot"></i></button>
-	    </div>
+				<!--<p> Show map of your location. </p>-->
+				<div class="w3-container w3-center" id="mapBttnID"> 
+				<img src="full-map.jpg" style="height: 200px; width: 400px; max-width: 100%; max-height: 100%;" class="w3-margin-top"></br>
+				<!-- <button class="w3-button w3-round-large w3-metro-dark-blue w3-margin w3-hover-green" style="width: 60%;" onclick="showLoc()">Show Location 
+					<i class="fa-solid fa-location-dot"></i></button> -->
+				<button class="w3-button w3-circle w3-xlarge w3-metro-dark-blue w3-margin" onclick="showLoc()">
+					<i class="fa-solid fa-location-dot"></i></button>
+				</div>
 
-	    <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
-	    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
-	    <div id="map" style="height: 50%; width: 100%; margin: auto; display: none;"></div>
+				<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
+				<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.css" />
+				<div id="map" style="height: 50%; width: 100%; margin: auto; display: none;"></div>
+			</div>
+		</div>
 	</div>
-    </div>
 <?php
 	//	if($connected = 0) {
 ?>
     <div class="w3-container w3-center">
-	<select class="w3-select w3-border w3-margin-bottom" style="width: 90%" name="faculty">
-	<option value="" disabled selected>Choose Walking Assistant</option>
+	<!-- <select class="w3-select w3-border w3-margin-bottom" style="width: 90%" name="faculty"> -->
+	<!-- <option value="" disabled selected>Choose Walking Assistant</option> -->
 <?php
-	$query="SELECT fID, fName, lName, gender from Faculty WHERE isAvailable=1";
-	$result=mysqli_query($db, $query);
-	if (mysqli_num_rows($result)>0) {
-		while ($rows=mysqli_fetch_assoc($result)) {
-			echo "<option value=".$rows["fID"].">".$rows["fName"]." ".$rows["lName"]." (".$rows["gender"].") </option>";
-		}
-	}
+	// $query="SELECT fID, fName, lName, gender from Faculty WHERE isAvailable=1";
+	// $result=mysqli_query($db, $query);
+	// if (mysqli_num_rows($result)>0) {
+		// while ($rows=mysqli_fetch_assoc($result)) {
+			// echo "<option value=".$rows["fID"].">".$rows["fName"]." ".$rows["lName"]." (".$rows["gender"].") </option>";
+		// }
+	// }
 ?>
-	</select><!--</br>-->
-	<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-margin-bottom w3-hover-green" style="width: 90%" type="submit">Connect <i class="fa-solid fa-handshake"></i></button><!--</a>--></br>
-<?php
-	//echo "prequery1";
-	//var_dump($_SESSION['uID']);
-	$uID = $_SESSION['uID'];
-	$fID = $_SESSION['fID'];
-	//var_dump($fID);
-	//var_dump($_SESSION['walkID']);
-	
-	$query2 = $db->prepare("SELECT fName, lName, gender FROM Faculty WHERE fID=?");
-	$query2->bind_param('i', $fID);
-	if($query2->execute()) {
-		mysqli_stmt_bind_result($query2, $res_first, $res_last, $res_gen);
-		if($query2->fetch()) {
-			$fname=$res_first;
-			$lname=$res_last;
-			$gender=$res_gen;
-			echo "Currently connected with: ".$fname." ".$lname." (".$gender.")";
-		}
-	} else { echo mysqli_error($db); }
- 
-
-?>	
-	<a href="inbox.php"<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-hover-green" style="width: 90%" onclick="">Inbox 
-	    <i class="fa fa-envelope"></i></button></a>
+	<!-- </select></br> -->
+	<!-- <button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-margin-bottom w3-hover-green" style="width: 90%" type="submit">Connect <i class="fa-solid fa-handshake"></i></button></a></br> -->
+		<?php
+			//echo "prequery1";
+			//var_dump($_SESSION['uID']);
+			$uID = $_SESSION['uID'];
+			$fID = $_SESSION['fID'];
+			//var_dump($fID);
+			//var_dump($_SESSION['walkID']);
+			
+			$query2 = $db->prepare("SELECT fName, lName, gender FROM Faculty WHERE fID=?");
+			$query2->bind_param('i', $fID);
+			if($query2->execute()) {
+				mysqli_stmt_bind_result($query2, $res_first, $res_last, $res_gen);
+				if($query2->fetch()) {
+					$fname=$res_first;
+					$lname=$res_last;
+					$gender=$res_gen;
+					// echo "Connected with: ".$fname." ".$lname." (".$gender.")"; ?>
+					<div class="w3-button w3-green w3-round-large w3-margin-bottom" style="width: 90%"><?php echo "Connected: ".$fname." (".$gender.")"; ?></div><?php
+				}
+			} else { echo mysqli_error($db); }
+		?>	
+		<a href="inbox.php"<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-hover-green" style="width: 90%" onclick="">Inbox 
+	    	<i class="fa fa-envelope"></i></button></a>
     </div>
-</form>
-	<script>
+<!--</form>-->
+<script>
 	//Variables
 	var lon, lat;
 	var map, marker, myIcon;
 	var popUp;
 
 	//Variables for Map Bounds
-	var northEast = L.latlng(35.354082, -119.092462),
+	var northEast = L.latLng(35.354082, -119.092462),
 		southWest = L.latLng(35.339888, -119.114156),
 		csubBounds = L.latLngBounds(northEast, southWest);
 
@@ -168,7 +167,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		// Adds the Map Tile Layer
 		var baseLayers = {
 		"OpenStreetMap": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-		attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+		//attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 			minZoom: 16,
 			maxZoom: 25,
 			id: 'mapbox/streets-v11',
@@ -178,7 +177,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 			accessToken: 'pk.eyJ1IjoiZHZpbnRpIiwiYSI6ImNrend1enYxdjg5c3oybm5rdnRsNzAyMHIifQ.wpv77ZIRfk3mI1gyqoOSAg'
 		}),
 				"Satellite": L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
-				attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+				//attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
 					minZoom: 16,
 					maxZoom: 25
 		})
@@ -189,7 +188,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 
 		// Adds the base layers to the map
 		L.control.layers(baseLayers, null, {
-		collapsed: false
+			collapsed: true
 		}).addTo(map);
 
 		// Fit Bounds
@@ -215,7 +214,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		// Disable Double Click Zoom
 		map.doubleClickZoom.disable();
 	}
-	</script>
+</script>
 </body>
 </html>
 

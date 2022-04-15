@@ -34,7 +34,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <!--<script src="projectV2.js"></script>-->
     <body>
 	<div class="w3-container w3-text-metro-dark-blue">
-		<div class="w3-container w3-center w3-padding-16">    
+		<div class="w3-container w3-center w3-margin-top">    
 			<div class="w3-card w3-margin"> 
 				<div class="w3-container w3-metro-dark-blue">
 				<h4>Welcome @<?php echo $_SESSION['uName']; ?>!</h4>
@@ -89,7 +89,9 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 					$lname=$res_last;
 					$gender=$res_gen;
 					// echo "Connected with: ".$fname." ".$lname." (".$gender.")"; ?>
-					<div class="w3-button w3-green w3-round-large w3-margin-bottom" style="width: 90%"><?php echo "Connected to: ".$fname." (".$gender.")"; ?></div><?php
+					<p style="font-style: italic;"><?php echo "Connected to: ".$fname." (".$gender.")"; ?></p>
+					<p style="font-style: italic;"><?php echo "Pick-Up Location: ".$_SESSION['pickUp']; ?></p>
+					<p style="font-style: italic;"><?php echo "Drop-Off Location: ".$_SESSION['dropOff']; ?></p><?php
 				}
 			} else { echo mysqli_error($db); }
 		?>	

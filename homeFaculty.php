@@ -8,7 +8,6 @@ require_once "navV2.php";
 
 
 if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
-	//	$connected = 0;
 ?>
     <body>
     <!DOCTYPE html>
@@ -29,7 +28,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <!-- <body> -->
     <body onload="showLoc()">
 	<div class="w3-container w3-text-metro-dark-blue">
-		<div class="w3-container w3-center w3-padding-16">    
+		<div class="w3-container w3-center w3-margin-top">    
 			<div class="w3-card w3-margin"> 
 				<div class="w3-container w3-metro-dark-blue">
 				<h4>Welcome @<?php echo $_SESSION['uName']; ?>!</h4>
@@ -47,24 +46,12 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 			</div>
 		</div>
 	</div>
-    <div class="w3-container w3-center">
-<?php
-	// $query="SELECT fID, fName, lName, gender from Faculty WHERE isAvailable=1";
-	// $result=mysqli_query($db, $query);
-	// if (mysqli_num_rows($result)>0) {
-		// while ($rows=mysqli_fetch_assoc($result)) {
-			// echo "<option value=".$rows["fID"].">".$rows["fName"]." ".$rows["lName"]." (".$rows["gender"].") </option>";
-		// }
-	// }
-?>
-	<!-- </select></br> -->
-	<!-- <button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-margin-bottom w3-hover-green" style="width: 90%" type="submit">Connect <i class="fa-solid fa-handshake"></i></button></a></br> -->
+	
+	<div class="w3-container w3-center">
 		<?php
 			$uID = $_SESSION['uID'];
 			$fID = $_SESSION['fID'];
 			$sID = $_SESSION['sID'];
-			$pickUp = $_SESSION['pickUp'];	
-			$dropOff = $_SESSION['dropOff'];	
 			
 			$query2 = $db->prepare("SELECT fName, lName, gender FROM User WHERE uID=?");
 			$query2->bind_param('i', $sID);
@@ -76,14 +63,14 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 					$gender=$res_gen;
 					// echo "Connected with: ".$fname." ".$lname." (".$gender.")"; ?>
 					<p style="font-style: italic;"><?php echo "Connected to: ".$fname." (".$gender.")"; ?></p>
-					<!--<p style="font-style: italic;"><?php //echo "Pick-Up at: ".$pickUp." "; ?></p>
-					<p style="font-style: italic;"><?php //echo "Drop-Off at: ".$dropOff." "; ?>--></p><?php
+					<p style="font-style: italic;"><?php echo "Pick-Up Location: ".$_SESSION['pickUp']; ?></p>
+					<p style="font-style: italic;"><?php echo "Drop-Off Location: ".$_SESSION['dropOff']; ?></p><?php
 				}
 			} else { echo mysqli_error($db); }
 		?>	
 		<a href="inbox.php"<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-hover-green w3-margin-bottom" style="width: 90%">Inbox 
 	    	<i class="fa fa-envelope"></i></button></a></br>
-        <a href="connectFaculty.php"<button class="w3-button w3-ripple w3-round-large w3-metro-yellow w3-hover-green" style="width: 90%">End Walk 
+        <a href="phpCreateReport.php"<button class="w3-button w3-ripple w3-round-large w3-metro-yellow w3-hover-green" style="width: 90%">End Walk 
             <i class="fa-solid fa-person-walking"></i></button></a>
     </div>
 <script>
