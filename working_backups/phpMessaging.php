@@ -18,8 +18,8 @@ $walkID = $_SESSION['walkID'];
 //table for every communication is 'Walk#' --> #=walkID
 
 if($_SERVER["REQUEST_METHOD"]=="POST") {
-	$_SESSION['nID'] = $_POST['message'];
-	$nID = $_SESSION['nID'];
+	//$_SESSION['nID'] = $_POST['message'];
+	$nID = $_POST['message'];
 
 	$insert_mess = $db->prepare("INSERT INTO Walk".$walkID." (fID, sID, nID) VALUES (?, ?, ?)");
 	$insert_mess->bind_param('iii', $fID, $sID, $nID);

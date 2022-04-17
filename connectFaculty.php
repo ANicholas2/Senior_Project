@@ -49,7 +49,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		}
 	}
 
-	if($_SESSION['sID'] > 0) {
+	if($_SESSION['sID'] != NULL) {
         // if connected
         echo '<p>Connected!</p>';
 	    echo '<a href="homeFaculty.php"<button class="w3-button w3-round-large w3-metro-dark-blue w3-hover-green w3-margin-bottom" style="width: 90%" onclick="">Home

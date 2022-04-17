@@ -160,11 +160,11 @@
 			// Disable Double Click Zoom
             map.doubleClickZoom.disable();
 
-            // On double click, add a new marker
-            map.on('dblclick', addMarker);
+            // On click, add a new marker
+            map.on('click', addMarker);
 
-			// On click, remove marker
-			//map.on('click', removeMarker);
+			// On double click, remove marker
+			map.on('dblclick', removeMarker);
 		}
 		</script>
 	</body>

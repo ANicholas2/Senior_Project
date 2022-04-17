@@ -25,9 +25,14 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <script src="https://kit.fontawesome.com/a6d0ff8634.js" crossorigin="anonymous"></script>
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
+    <!--<style>
+		html, body { height: 100%; width: 100%; margin: 0; } 
+		.leaflet-container { max-width: 100%; max-height: 100%; }
+		.leaflet-control-layers { text-align: left; }
+    </style>-->
+    <!--<script src="projectV2.js"></script>-->
     <body>
-
-	<form action="phpConnect.php" method="POST" class="w3-container w3-text-metro-dark-blue">
+<form action="phpConnect.php" method="POST" class="w3-container w3-text-metro-dark-blue">
     <div class="w3-container w3-center w3-padding-16">    
 	<div class="w3-card w3-margin"> 
 		<div class="w3-container w3-metro-dark-blue">
@@ -37,61 +42,57 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <div class="w3-container w3-center">
 	<select class="w3-select w3-border w3-margin-bottom w3-margin-top" style="width: 90%" name="faculty">
 	<option value="" disabled selected>Choose Walker:</option>
-	
-	<?php
+<?php
 	$query="SELECT fID, fName, lName, gender from Faculty WHERE isAvailable=1";
 	$result=mysqli_query($db, $query);
 	if (mysqli_num_rows($result)>0) {
 		while ($rows=mysqli_fetch_assoc($result)) {
-			echo "<option value=".$rows["fID"].">".$rows["fID"]." ".$rows["fName"]." ".$rows["lName"]." (".$rows["gender"].") </option>";
+			echo "<option value=".$rows["fID"].">".$rows["fName"]." ".$rows["lName"]." (".$rows["gender"].") </option>";
 		}
 	}
-	?>
-	
-	</select>
-
-	<select class="w3-select w3-border w3-margin-bottom" style="width: 90%" name="pickUp">
+?>
+	</select><!--</br>-->
+    <div class="w3-container w3-center">
+	<select class="w3-select w3-border w3-margin-bottom w3-margin-top" style="width: 90%" name="pickUp">
 	<option value="" disabled selected>Choose Pick-Up:</option>
-
-	<?php
-	$query2="SELECT locName from Locations";
+<?php
+	$query2="SELECT locID, locName from Locations ";
 	$result2=mysqli_query($db, $query2);
 	if (mysqli_num_rows($result2)>0) {
 		while ($rows2=mysqli_fetch_assoc($result2)) {
-			echo "<option value='".$rows2["locName"]."'>".$rows2["locName"]." </option>";
+			echo "<option value=".$rows2["locID"].">".$rows2["locName"]." </option>";
 		}
 	}
-	?>
-	
-	</select>
-
-	<select class="w3-select w3-border w3-margin-bottom" style="width: 90%" name="dropOff">
+?>
+	</select><!--</br>-->
+    <div class="w3-container w3-center">
+	<select class="w3-select w3-border w3-margin-bottom w3-margin-top" style="width: 90%" name="dropOff">
 	<option value="" disabled selected>Choose Drop-Off:</option>
-
-	<?php
-	$query3="SELECT locID, locName from Locations";
+<?php
+	$query3="SELECT locID, locName from Locations ";
 	$result3=mysqli_query($db, $query3);
 	if (mysqli_num_rows($result3)>0) {
 		while ($rows3=mysqli_fetch_assoc($result3)) {
-			echo "<option value='".$rows3["locName"]."'>".$rows3["locName"]." </option>";
+			echo "<option value=".$rows3["locID"].">".$rows3["locName"]." </option>";
 		}
 	}
-	?>
-	
-	</select>
-
-
+?>
+	</select><!--</br>-->
 	<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-margin-bottom w3-hover-green" style="width: 90%" type="submit">Connect 
         <i class="fa-solid fa-handshake"></i></button><!--</a>--></br>
 		<?php
+			//echo "prequery1";
+			//var_dump($_SESSION['uID']);
 			$uID = $_SESSION['uID'];
 			$fID = $_SESSION['fID'];
+			//var_dump($fID);
+			//var_dump($_SESSION['walkID']);
 			
-			$query2 = $db->prepare("SELECT fName, lName, gender FROM Faculty WHERE fID=?");
-			$query2->bind_param('i', $fID);
-			if($query2->execute()) {
-				mysqli_stmt_bind_result($query2, $res_first, $res_last, $res_gen);
-				if($query2->fetch()) {
+			$query4 = $db->prepare("SELECT fName, lName, gender FROM Faculty WHERE fID=?");
+			$query4->bind_param('i', $fID);
+			if($query4->execute()) {
+				mysqli_stmt_bind_result($query4, $res_first, $res_last, $res_gen);
+				if($query4->fetch()) {
 					$fname=$res_first;
 					$lname=$res_last;
 					$gender=$res_gen;
@@ -103,9 +104,9 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 			} else { echo mysqli_error($db); }
 		?>	
     </div>
-	</form>
-	</body>
-	</html>
+</form>
+</body>
+</html>
 
 <?php
 } else {

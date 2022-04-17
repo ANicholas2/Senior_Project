@@ -26,14 +26,7 @@ if($rep->execute()) {
 } else {
 	echo mysqli_error($db);
 }
-
-/*$delWalk = $db->prepare("DROP TABLE Walk".$_SESSION['walkID'];
-if($delWalk->execute()) {
-} else {
-	echo mysqli_error($db);
-}*/
-
-header("Location: endWalkAvailUpdate.php");
+header("Location: connectFaculty.php");
 exit();
 
 if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {

@@ -25,7 +25,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <script src="https://kit.fontawesome.com/a6d0ff8634.js" crossorigin="anonymous"></script>
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
-<meta http-equiv="refresh" content="5">
+    <meta http-equiv="refresh" content="10">
     <body>
     <form action="phpConnect.php" method="POST" class="w3-container w3-text-metro-dark-blue">
     <div class="w3-container w3-center w3-padding-16">    
@@ -37,32 +37,30 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <div class="w3-container w3-center">
 
     <?php
-	$query = $db->prepare("SELECT walkID, sID From Partnered_With WHERE fID=?");
+	$query = $db->prepare("SELECT walkID, sID, pickUp, dropOff From Partnered_With WHERE fID=?");
 	$query->bind_param('i', $_SESSION['fID']);
 	if($query->execute()) {
-		mysqli_stmt_bind_result($query, $wID, $stuID);
+		mysqli_stmt_bind_result($query, $wID, $stuID, $pick, $drop);
 		if($query->fetch()) {
 			$_SESSION['walkID'] = $wID;
 			$_SESSION['sID'] = $stuID;
+			$_SESSION['pickUp'] = $pick;
+			$_SESSION['dropOff'] = $drop;
 		}
 	}
 
-	if($_SESSION['sID'] > 0) {
+	if($_SESSION['sID'] != NULL) {
         // if connected
         echo '<p>Connected!</p>';
-	    echo '<a href="homeV2.php"<button class="w3-button w3-round-large w3-metro-dark-blue w3-hover-green w3-margin-bottom" style="width: 90%" onclick="">Home
+	    echo '<a href="homeFaculty.php"<button class="w3-button w3-round-large w3-metro-dark-blue w3-hover-green w3-margin-bottom" style="width: 90%" onclick="">Home
             <i class="fa-solid fa-house-user"></i></button></a>';
-		//header("Location: homeV2.php");
 	} else { 
-        //header("Location: connectFaculty.php"); 
         // if not connected
-        include(meta.php);
+        //include(meta.php);
         echo '<p>Wait for Connection...</p>';
         echo '<p><i class="w3-jumbo fa-solid fa-wifi"></i></p>';
     }
     ?>
-
-
 
     </div>
 </form>
