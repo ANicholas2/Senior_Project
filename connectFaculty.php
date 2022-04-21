@@ -37,7 +37,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <div class="w3-container w3-center">
 
     <?php
-	$query = $db->prepare("SELECT walkID, sID, pickUp, dropOff From Partnered_With WHERE fID=?");
+	$query = $db->prepare("SELECT walkID, sID, pickUp, dropOff FROM Partnered_With WHERE fID=?");
 	$query->bind_param('i', $_SESSION['fID']);
 	if($query->execute()) {
 		mysqli_stmt_bind_result($query, $wID, $stuID, $pick, $drop);
@@ -46,11 +46,23 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 			$_SESSION['sID'] = $stuID;
 			$_SESSION['pickUp'] = $pick;
 			$_SESSION['dropOff'] = $drop;
+			$_SESSION['startTime']=date('Y-m-d H:i:s');
 		}
 	}
 
-	if($_SESSION['sID'] != NULL) {
-        // if connected
+	$avail="SELECT isAvailable FROM Faculty where fID=".$_SESSION['fID'];
+	//echo $avail;
+	$resA=mysqli_query($db, $avail);
+	if(mysqli_num_rows($resA)>0) {
+		while($status=mysqli_fetch_assoc($resA)) {
+			$isA = $status["isAvailable"];
+			//echo $isA;
+		}
+	}
+
+	//if($_SESSION['sID'] != NULL) {
+	if($isA == 0) {
+	// if connected
         echo '<p>Connected!</p>';
 	    echo '<a href="homeFaculty.php"<button class="w3-button w3-round-large w3-metro-dark-blue w3-hover-green w3-margin-bottom" style="width: 90%" onclick="">Home
             <i class="fa-solid fa-house-user"></i></button></a>';

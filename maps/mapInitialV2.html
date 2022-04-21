@@ -63,7 +63,7 @@
 				// Gets the current location of the user every second
 				setInterval(() => {
 					navigator.geolocation.getCurrentPosition(works, error);
-				}, 1000);
+				}, 100);
 			} else {
 				loc.innerHTML = "Geolocation not supported.";
 			}
@@ -102,13 +102,15 @@
 
 		function getMap(lat, lon) {
 			// Bounding Box for the map
-			var northEast = L.latLng(35.351412, -119.101106),
-				southWest = L.latLng(35.348037, -119.107567),
+			var northEast = L.latLng(35.354213, -119.096448),
+				southWest = L.latLng(35.342976, -119.109933),
 				csubBounds = L.latLngBounds(northEast, southWest);
 
 			// Sets the initial Map View
             map = L.map("map", {
-				maxBounds: csubBounds
+				maxBounds: csubBounds,
+				attributionControl: false,
+				zoomControl: true
 			}).setView([lat, lon], 17);
 			
 			// Adds the Map Tile Layer
@@ -140,17 +142,18 @@
 			}).addTo(map);
 
 			// Zooms the map to the bounding box
-			//map.fitBounds(csubBounds);
+			map.fitBounds(csubBounds);
 
             // User Marker for Student Icon
             // Student Icon
             var myIcon = L.icon({
-                iconUrl: 'maps/CSUBMark.png',
-                iconSize: [40, 50],
+                iconUrl: 'CSUB Blue Marker.png',
+                iconSize: [50, 50],
                 iconAnchor: [22, 94],
-                popupAnchor: [-3, -76]
+                popupAnchor: [4, -85]
             });
 
+			// Creates the marker for the user
             var marker = L.marker([lat, lon], {icon: myIcon}).addTo(map)
                 .bindPopup('<b>User Location</b>').openPopup();
             
@@ -161,11 +164,11 @@
             map.doubleClickZoom.disable();
 
             // On click, add a new marker
-            map.on('click', addMarker);
+            map.on('dblclick', addMarker);
 
 			// On double click, remove marker
-			map.on('dblclick', removeMarker);
+			map.on('click', removeMarker);
 		}
 		</script>
 	</body>
-	</html>
+</html>

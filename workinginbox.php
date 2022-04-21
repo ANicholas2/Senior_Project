@@ -53,25 +53,17 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 <?php
 	if(isset($_POST['message'])) {
 		$messID = $_POST['message'];
-		$getMessages = "SELECT nID FROM Walk".$_SESSION['walkID'];
-		$resMessages=mysqli_query($db, $getMessages);
-		if (mysqli_num_rows($resMessages)>0) {
-			while($rowsM=mysqli_fetch_assoc($resMessages)) {
-				//echo $rowsM["nID"];
-				$query1 = "SELECT Message FROM Notify WHERE nID=".$rowsM["nID"];
-				//echo $query1;
-				$result1=mysqli_query($db, $query1);
-				if (mysqli_num_rows($result1)>0) {
-					while($rows1=mysqli_fetch_assoc($result1)) {
-					//if($_SESSION["position"] == "Faculty") {
+		$query1 = "SELECT Message FROM Notify WHERE nID=".$messID;
+		$result1=mysqli_query($db, $query1);
+		if (mysqli_num_rows($result1)>0) {
+			while($rows1=mysqli_fetch_assoc($result1)) {
+					if($_SESSION["position"] == "Faculty") {
 						echo '<div class="w3-panel w3-leftbar w3-left-align w3-round-xlarge w3-metro-dark-blue" style="font-style: italic;">';
 						echo '<p>'.$rows1["Message"].'</p>';
 						echo '</div>';
-					/*} else {
+					} else {
 						echo $rows1["Message"];
-						}*/
 					}
-				}
 			}
 		}
 

@@ -99,124 +99,134 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 	    	<i class="fa fa-envelope"></i></button></a>
     </div>
 <!--</form>-->
-<script>
-	//Variables
-	var lon, lat;
-	var map, marker, myIcon;
-	var popUp;
+	<script>
+		//Variables
+		var map;
 
-	//Variables for Map Bounds
-	var northEast = L.latLng(35.354082, -119.092462),
-		southWest = L.latLng(35.339888, -119.114156),
-		csubBounds = L.latLngBounds(northEast, southWest);
+		function showLoc() {
+			var x = document.getElementById("mapBttnID");
+			var y = document.getElementById("map");
 
-	function showLoc() {
-		var x = document.getElementById("mapBttnID");
-		var y = document.getElementById("map");
+			if (navigator.geolocation) {
+				setInterval(() => {
+					navigator.geolocation.getCurrentPosition(works, error);
+				}, 1000);
+			} else {
+				loc.innerHTML = "Geolocation not supported.";
+			}
 
-		if (navigator.geolocation) {
-			setInterval(() => {
-			navigator.geolocation.getCurrentPosition(works, error);
-		}, 1000);
-		} else {
-			loc.innerHTML = "Geolocation not supported.";
+			if (x.style.display === "none") {
+				x.style.display = "block";
+			} else {
+				x.style.display = "none";
+			}
+
+			if (y.style.display === "none") {
+				y.style.display = "block";
+			} else {
+				y.style.display = "none";
+			}
 		}
 
-		if (x.style.display === "none") {
-			x.style.display = "block";
-		} else {
-			x.style.display = "none";
+		function works(loc) {
+			var lat = loc.coords.latitude;
+			var lon = loc.coords.longitude;
+			getMap(lat, lon);
 		}
 
-		if (y.style.display === "none") {
-			y.style.display = "block";
-		} else {
-			y.style.display = "none";
+		function error() {
+			alert("Cannot get location");
 		}
-	}
 
-	function works(loc) {
-		lat = loc.coords.latitude;
-		lon = loc.coords.longitude;
-		getMap(lat, lon);
-	}
-
-	function error() {
-		alert("Cannot get location");
-	}
-
-	function onMapClick(e) {
-		popUp = L.popup();
-		var newMarker = new L.marker(e.latlng, {
-		draggable: true,
-			autoPan: true
-		});
-		newMarker.on('dragend', function(e) {
-			newMarker = e.target;
-			var position = newMarker.getLatLng();
-			newMarker.setLatLng(position, {
-			draggable: true
+		var newMarker;
+		function addMarker(e) {
+			var popUp = L.popup();
+			newMarker = new L.Marker(e.latlng, {
+				draggable: true,
+				autoPan: true,
+				riseOnHover: true
 			});
-		});
-		newMarker.addTo(map)
-			.bindPopup('You clicked the map at ' + e.latlng.toString()).openPopup();
-	}
+			map.addLayer(newMarker);
+			newMarker.bindPopup("<b>You are here!</b><br>Latitude: " + e.latlng.lat + "<br>Longitude: " + e.latlng.lng).openPopup();
+			newMarker.on('dragend', function(e) {
+				popUp.setLatLng(e.target.getLatLng());
+				popUp.setContent("<b>You are here!</b><br>Latitude: " + e.target.getLatLng().lat + "<br>Longitude: " + e.target.getLatLng().lng);
+				newMarker.bindPopup(popUp).openPopup();
+			});
+		}
 
-	function getMap(lat, lon) {
-		// Sets the Map View along with the Initial Zoom Level
-		map = L.map("map").setView([lat, lon], 17);
+		function removeMarker(e) {
+			map.removeLayer(newMarker);
+		}
 
-		// Adds the Map Tile Layer
-		var baseLayers = {
-		"OpenStreetMap": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-		//attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-			minZoom: 16,
-			maxZoom: 25,
-			id: 'mapbox/streets-v11',
-			tileSize: 512,
-			zoomOffset: -1,
-			fitBounds: csubBounds,
-			accessToken: 'pk.eyJ1IjoiZHZpbnRpIiwiYSI6ImNrend1enYxdjg5c3oybm5rdnRsNzAyMHIifQ.wpv77ZIRfk3mI1gyqoOSAg'
-		}),
-				"Satellite": L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
-				//attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+		function getMap(lat, lon) {
+			// Bounding Box for the map
+			var northEast = L.latLng(35.351412, -119.101106),
+				southWest = L.latLng(35.348037, -119.107567),
+				csubBounds = L.latLngBounds(northEast, southWest);
+
+			// Sets the initial Map View
+            map = L.map("map", {
+				maxBounds: csubBounds,
+				attributionControl: false
+			}).setView([lat, lon], 17);
+			
+			// Adds the Map Tile Layer
+			var baseLayers = {
+				"OpenStreetMap": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+					//attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 					minZoom: 16,
-					maxZoom: 25
-		})
-		};
+					maxZoom: 21,
+					id: 'mapbox/streets-v11',
+					tileSize: 512,
+					zoomOffset: -1,
+					accessToken: 'pk.eyJ1IjoiZHZpbnRpIiwiYSI6ImNrend1enYxdjg5c3oybm5rdnRsNzAyMHIifQ.wpv77ZIRfk3mI1gyqoOSAg'
+				}),
+				"Satellite": L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
+					//attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+					minZoom: 16,
+					maxZoom: 19,
+					tileSize: 512,
+					zoomOffset: -1
+				})
+			};
 
-		// This makes the default map view to be OpenStreetMap
-		this.map.addLayer(baseLayers["OpenStreetMap"]);
+			// This makes the default map view to be OpenStreetMap
+			this.map.addLayer(baseLayers["OpenStreetMap"]);
 
-		// Adds the base layers to the map
-		L.control.layers(baseLayers, null, {
-			collapsed: true
-		}).addTo(map);
+			// Adds the Layer Switch to the map
+			L.control.layers(baseLayers, null, {
+				collapsed: true
+			}).addTo(map);
 
-		// Fit Bounds
+			// Zooms the map to the bounding box
+			//map.fitBounds(csubBounds);
 
-		// User Marker for Student Icon
-		// Student Icon
-		myIcon = L.icon({
-		iconUrl: 'maps/CSUBMark.png',
-			iconSize: [40, 50],
-			iconAnchor: [22, 94],
-			popupAnchor: [-3, -76]
-		});
+            // User Marker for Student Icon
+            // Student Icon
+            var myIcon = L.icon({
+                iconUrl: 'maps/CSUB Blue Marker.png',
+                iconSize: [50, 50],
+                iconAnchor: [22, 94],
+                popupAnchor: [5, -85]
+            });
 
-		marker = L.marker([lat, lon], {icon: myIcon}).addTo(map)
-			.bindPopup('<b>User Location</b>').openPopup();
+            var marker = L.marker([lat, lon], {icon: myIcon}).addTo(map)
+                .bindPopup('<b>User Location</b>').openPopup();
+            
+            //Start at Bakersfield after User Marker is set
+            //map.panTo(new L.LatLng(35.350056, -119.103599));
+            
+			// Disable Double Click Zoom
+            map.doubleClickZoom.disable();
 
-		//Start at Bakersfield after User Marker is set
-		//map.panTo(new L.LatLng(35.350056, -119.103599));
+            // On click, add a new marker
+            map.on('click', addMarker);
 
-		// On double click, add a new marker
-		map.on('dblclick', onMapClick);
-
-		// Disable Double Click Zoom
-		map.doubleClickZoom.disable();
+			// On double click, remove marker
+			map.on('dblclick', removeMarker);
 	}
-</script>
+	</script>
 </body>
 </html>
 
