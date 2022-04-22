@@ -62,18 +62,36 @@
 			if (navigator.geolocation) {
 				// Gets the current location of the user every second
 				setInterval(() => {
-					navigator.geolocation.getCurrentPosition(works, error);
-				}, 100);
+					navigator.geolocation.getCurrentPosition(locate, error);
+				}, 1000);
 			} else {
 				loc.innerHTML = "Geolocation not supported.";
 			}
 		}
 
-		function works(loc) {
+		function locate(loc) {
 			var lat = loc.coords.latitude;
 			var lon = loc.coords.longitude;
 			getMap(lat, lon);
+			/*updateLocationForMe(lat, lon);
+			getLocationForPartner(partner_user_id);*/
 		}
+
+		/*function getLocationForPartner(lat, lon) {
+			let args = {
+				getLocationForPartner: true
+			};
+			$.post("locationUpdater.php", args);
+		}
+
+		function updateLocation(lat, lon) {
+			let args = {
+				updateMyLocation: true,
+				lat: lat,
+				lon: lon
+			};
+			$.post("locationUpdater.php", args);
+		}*/
 
 		function error() {
 			alert("Cannot get location");
@@ -172,3 +190,4 @@
 		</script>
 	</body>
 </html>
+
