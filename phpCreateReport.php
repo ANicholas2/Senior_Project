@@ -11,8 +11,8 @@ if(mysqli_connect_errno()) {
 	exit();
 }
 $walkID = $_SESSION['walkID'];
-var_dump($walkID);
-	$report = "CREATE TABLE Report".$walkID." (
+//var_dump($walkID);
+	$report = $db->prepare("CREATE TABLE Report".$walkID." (
 		fID int,
 		sID int,
 		pickUp varchar(50),
@@ -21,9 +21,8 @@ var_dump($walkID);
 		endTime	varchar(50),
 		PRIMARY KEY (startTime, endTime),
 		FOREIGN KEY (fID) REFERENCES Faculty(fID),
-		FOREIGN KEY (sID) REFERENCES User(uID) )";
-//echo "create statement ^^";
-if($db->query($report)) {
+		FOREIGN KEY (sID) REFERENCES User(uID) )");
+if($report->execute()) {
 //	echo "created!";
 	} else {
 		echo mysqli_error($db);

@@ -6,6 +6,7 @@ include “dbfunctions.php”;
 
 ?>
 <?php
+// This uses GOogle API... is it bad to mix with leaflet? 
 function geoLocate($address)
 {
     try {

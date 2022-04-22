@@ -12,7 +12,7 @@ if(mysqli_connect_errno()) {
 }
 $walkID = $_SESSION['walkID'];
 var_dump($walkID);
-	$create = "CREATE TABLE Walk".$walkID." (
+	$create = $db->prepare("CREATE TABLE Walk".$walkID." (
 		messageID int NOT NULL AUTO_INCREMENT, 
 		fID int,
 		sID int,
@@ -20,10 +20,10 @@ var_dump($walkID);
 		PRIMARY KEY (messageID),
 		FOREIGN KEY (fID) REFERENCES Faculty(fID),
 		FOREIGN KEY (sID) REFERENCES User(uID),
-		FOREIGN KEY (nID) REFERENCES Notify(nID) )";
-//echo "create statement ^^";
-if($db->query($create)) {
+		FOREIGN KEY (nID) REFERENCES Notify(nID) )");
+//if($db->query($create)) {
 //	echo "created!";
+	if ($create->execute()) {
 	} else {
 		echo mysqli_error($db);
 	}

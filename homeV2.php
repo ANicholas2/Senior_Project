@@ -61,15 +61,6 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <div class="w3-container w3-center">
 	<!-- <select class="w3-select w3-border w3-margin-bottom" style="width: 90%" name="faculty"> -->
 	<!-- <option value="" disabled selected>Choose Walking Assistant</option> -->
-<?php
-	// $query="SELECT fID, fName, lName, gender from Faculty WHERE isAvailable=1";
-	// $result=mysqli_query($db, $query);
-	// if (mysqli_num_rows($result)>0) {
-		// while ($rows=mysqli_fetch_assoc($result)) {
-			// echo "<option value=".$rows["fID"].">".$rows["fName"]." ".$rows["lName"]." (".$rows["gender"].") </option>";
-		// }
-	// }
-?>
 	<!-- </select></br> -->
 	<!-- <button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-margin-bottom w3-hover-green" style="width: 90%" type="submit">Connect <i class="fa-solid fa-handshake"></i></button></a></br> -->
 		<?php

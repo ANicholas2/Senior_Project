@@ -38,6 +38,11 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
 		echo "Password is required!";
 		exit();
 	}
+	else if(empty($email)) {
+		header("Location: createAccount.php?error=Email is required!");
+		echo "Email is required!";
+		exit();
+	}
 	else if(empty($re)) {
 		header("Location: createAccount.php?error=Please re-enter password!");
 		echo "Please re-enter password!";
@@ -56,11 +61,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
 	else if(empty($lname)) {
 		header("Location: createAccount.php?error=Please enter last name!");
 		echo "Please enter last name!";
-		exit();
-	}
-	else if(empty($email)) {
-		header("Location: createAccount.php?error=Email is required!");
-		echo "Email is required!";
 		exit();
 	}
 	else if(empty($gender)) {
