@@ -81,8 +81,8 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 					$gender=$res_gen;
 					// echo "Connected with: ".$fname." ".$lname." (".$gender.")"; ?>
 					<p style="font-style: italic;"><?php echo "Connected to: ".$fname." (".$gender.")"; ?></p>
-					<p style="font-style: italic;"><?php echo "Pick-Up Location: ".$_SESSION['pickUp']; ?></p>
-					<p style="font-style: italic;"><?php echo "Drop-Off Location: ".$_SESSION['dropOff']; ?></p><?php
+					<p style="font-style: italic;"><?php echo "Pick-Up: ".$_SESSION['pickUp']; ?></p>
+					<p style="font-style: italic;"><?php echo "Drop-Off: ".$_SESSION['dropOff']; ?></p><?php
 				}
 			} else { echo mysqli_error($db); }
 		?>	
@@ -152,20 +152,21 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 
 		function getMap(lat, lon) {
 			// Bounding Box for the map
-			var northEast = L.latLng(35.351412, -119.101106),
-				southWest = L.latLng(35.348037, -119.107567),
+			var northEast = L.latLng(35.354213, -119.096448),
+				southWest = L.latLng(35.342976, -119.109933),
 				csubBounds = L.latLngBounds(northEast, southWest);
 
 			// Sets the initial Map View
             map = L.map("map", {
 				maxBounds: csubBounds,
-				attributionControl: false
+				attributionControl: false,
+				zoomControl: true
 			}).setView([lat, lon], 17);
 			
 			// Adds the Map Tile Layer
 			var baseLayers = {
 				"OpenStreetMap": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-					//attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 					minZoom: 16,
 					maxZoom: 21,
 					id: 'mapbox/streets-v11',
@@ -174,7 +175,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 					accessToken: 'pk.eyJ1IjoiZHZpbnRpIiwiYSI6ImNrend1enYxdjg5c3oybm5rdnRsNzAyMHIifQ.wpv77ZIRfk3mI1gyqoOSAg'
 				}),
 				"Satellite": L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
-					//attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
+					attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
 					minZoom: 16,
 					maxZoom: 19,
 					tileSize: 512,
@@ -191,18 +192,26 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 			}).addTo(map);
 
 			// Zooms the map to the bounding box
-			//map.fitBounds(csubBounds);
+			map.fitBounds(csubBounds);
 
             // User Marker for Student Icon
             // Student Icon
-            var myIcon = L.icon({
-                iconUrl: 'maps/CSUB Blue Marker.png',
+            var BlueIcon = L.icon({
+                iconUrl: 'CSUB Blue Marker.png',
                 iconSize: [50, 50],
                 iconAnchor: [22, 94],
-                popupAnchor: [5, -85]
+                popupAnchor: [4, -85]
             });
 
-            var marker = L.marker([lat, lon], {icon: myIcon}).addTo(map)
+			var YellowIcon = L.icon({
+                iconUrl: 'CSUB Yellow Marker.png',
+                iconSize: [50, 50],
+                iconAnchor: [22, 94],
+                popupAnchor: [4, -85]
+            });
+
+			// Creates the marker for the user
+            var marker = L.marker([lat, lon], {icon: BlueIcon}).addTo(map)
                 .bindPopup('<b>User Location</b>').openPopup();
             
             //Start at Bakersfield after User Marker is set
@@ -212,11 +221,11 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
             map.doubleClickZoom.disable();
 
             // On click, add a new marker
-            map.on('click', addMarker);
+            map.on('dblclick', addMarker);
 
 			// On double click, remove marker
-			map.on('dblclick', removeMarker);
-	}
+			map.on('click', removeMarker);
+		}
 	</script>
 </body>
 </html>

@@ -44,8 +44,8 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
                     <button class="w3-button w3-center w3-round-large w3-metro-dark-blue w3-ripple w3-margin-bottom w3-hover-green" type="" 
                         onclick="window.location.href='https://artemis.cs.csub.edu/~runnerpp/project/pwReset.php';"><i>New Password?</i></button></br>
 
-                    <button class="w3-button w3-center w3-round-large w3-metro-dark-blue w3-ripple w3-margin-bottom w3-hover-green" type="" 
-		                onclick="window.location.href='https://artemis.cs.csub.edu/~runnerpp/project/facultyReport.php';">Report Page</i></button>
+                    <!-- <button class="w3-button w3-center w3-round-large w3-metro-dark-blue w3-ripple w3-margin-bottom w3-hover-green" type="" 
+		                onclick="window.location.href='https://artemis.cs.csub.edu/~runnerpp/project/facultyReport.php';">Report Page</i></button> -->
                 </div>
 
                 </div>

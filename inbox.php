@@ -51,6 +51,10 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 	<!-- </div> -->
 
 <?php
+	if ($_SESSION['position'] == "Faculty") {
+		echo "fac";
+	} else 
+		echo "stu";
 	if(isset($_POST['message'])) {
 		$messID = $_POST['message'];
 		$getMessages = "SELECT nID FROM Walk".$_SESSION['walkID'];
@@ -63,13 +67,19 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 				$result1=mysqli_query($db, $query1);
 				if (mysqli_num_rows($result1)>0) {
 					while($rows1=mysqli_fetch_assoc($result1)) {
-					//if($_SESSION["position"] == "Faculty") {
-						echo '<div class="w3-panel w3-leftbar w3-left-align w3-round-xlarge w3-metro-dark-blue" style="font-style: italic;">';
-						echo '<p>'.$rows1["Message"].'</p>';
-						echo '</div>';
-					/*} else {
-						echo $rows1["Message"];
-						}*/
+						//if($_SESSION['position'] == "Faculty") {
+							echo '<div style="display: flex; flex-direction: row">';
+							echo '<div class="w3-panel w3-leftbar w3-left-align w3-round-xlarge w3-metro-dark-blue" style="font-style: italic;">';
+							echo '<p>'.$rows1["Message"].'</p>';
+							echo '</div>';
+							echo '</div>';
+						/*} else {
+							echo '<div style="display: flex; flex-direction: reverse-row">'
+								echo '<div class="w3-panel w3-rightbar w3-right-align w3-round-xlarge w3-metro-yellow" style="font-style: italic;">';
+							echo '<p>'.$rows1["Message"].'</p>';
+							echo '</div>';
+							echo '</div>';
+							}*/
 					}
 				}
 			}

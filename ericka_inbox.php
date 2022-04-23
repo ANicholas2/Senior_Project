@@ -27,45 +27,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
 <!--<meta http-equiv="refresh" content="10">-->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"
-integrity="sha256-/xUj+3OJU5yEx1q6GSYGSHk7tPXikynS7ogEvDej/m4="
-crossorigin="anonymous">
-</script>
-<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
-integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
-crossorigin="anonymous">
-</script>
-
 <body>
-
-<?php
-	if(isset($_POST["getMessages"]) {
-		$all = $db->prepare("SELECT Message FROM Walk".$_SESSION['walkID']." NATURAL JOIN Notify ORDER BY id DESC");
-		$all->execute();
-		$resMess = $all->get_result();
-
-		$results = [];
-
-		while ($mess = $resMess->fetch_assoc()) {
-			$results [] = $mess;
-		}
-
-		echo json_encode($results);
-		die();
-		/*$count = 0;
-		while ($count < sizeof($results) {
-		//if($_SESSION["position"] == "Faculty") {
-		echo '<div class="w3-panel w3-leftbar w3-left-align w3-round-xlarge w3-metro-dark-blue" style="font-style: italic;">';
-		echo '<p>'.$results[$count].'</p>';
-		echo '</div>';
-		} else {
-			echo $rows1["Message"];
-		}
-		}
-		$count= $count + 1;*/
-	}
-
-?>
 
 <!-- page container - needed for submit -->
 
@@ -87,37 +49,41 @@ crossorigin="anonymous">
 	<!-- <div class="w3-panel w3-leftbar w3-left-align w3-round-xlarge w3-metro-dark-blue" style="font-style: italic;"> -->
 	    <!-- <p>On my way</p> -->
 	<!-- </div> -->
-	<script>
-	function getMessages() {
-		let args = {
-		getMessages: true
-	};
-		$.post("ericka_inbox.php", args)
-			.done(function (result, status, xhr) {
-				if (status == "success") {
-					console.log(result);
-					let messages = document.getElementById("messages");
-					messages.innerHTML = "";
-
-					for (let m of result) {
-						messages.innerHTML += m.Message + "<br>";
-					} 
-				}
-				else {
-					$("#messages").html("Error retrieving message!");
-				}
-			} )
-			.fail(function (xhr, status, error) {
-				$("#messages").html("Error sending message!");
-			});
-	}
-
-	setInterval(getMessages, 500);
-	</script>
 
 <?php
+	if ($_SESSION['position'] == "Faculty") {
+		echo "fac";
+	} else 
+		echo "stu";
 	if(isset($_POST['message'])) {
 		$messID = $_POST['message'];
+		$getMessages = "SELECT nID FROM Walk".$_SESSION['walkID'];
+		$resMessages=mysqli_query($db, $getMessages);
+		if (mysqli_num_rows($resMessages)>0) {
+			while($rowsM=mysqli_fetch_assoc($resMessages)) {
+				//echo $rowsM["nID"];
+				$query1 = "SELECT Message FROM Notify WHERE nID=".$rowsM["nID"];
+				//echo $query1;
+				$result1=mysqli_query($db, $query1);
+				if (mysqli_num_rows($result1)>0) {
+					while($rows1=mysqli_fetch_assoc($result1)) {
+						//if($_SESSION['position'] == "Faculty") {
+							echo '<div style="display: flex; flex-direction: row">';
+							echo '<div class="w3-panel w3-leftbar w3-left-align w3-round-xlarge w3-metro-dark-blue" style="font-style: italic;">';
+							echo '<p>'.$rows1["Message"].'</p>';
+							echo '</div>';
+							echo '</div>';
+						/*} else {
+							echo '<div style="display: flex; flex-direction: reverse-row">'
+								echo '<div class="w3-panel w3-rightbar w3-right-align w3-round-xlarge w3-metro-yellow" style="font-style: italic;">';
+							echo '<p>'.$rows1["Message"].'</p>';
+							echo '</div>';
+							echo '</div>';
+							}*/
+					}
+				}
+			}
+		}
 
 		$insert_mess = $db->prepare("INSERT INTO Walk".$_SESSION['walkID']."(fID, sID, nID) VALUES (?, ?, ?)");
 		$insert_mess->bind_param('iii', $_SESSION['fID'], $_SESSION['sID'], $messID);

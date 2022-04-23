@@ -12,7 +12,6 @@ $pos2 = $_SESSION["position"];
 <div class="w3-bar w3-metro-dark-blue w3-large">
   <?php
   if ($pos == "Faculty") {
-    echo '<a href="facultyReport.php" class="w3-bar-item w3-button w3-hide-small w3-right">Report History</a>';
     echo '<a href="homeFaculty.php" class="w3-bar-item w3-button w3-metro-dark-blue"><img src="csub_logoV2.png" style="height:26px;">';
   } else {
     echo '<a href="homeV2.php" class="w3-bar-item w3-button w3-metro-dark-blue"><img src="csub_logoV2.png" style="height:26px;">';
@@ -28,11 +27,6 @@ $pos2 = $_SESSION["position"];
 <div id="demo" class="w3-bar-block w3-metro-light-blue w3-hide w3-hide-large w3-hide-medium">
   <a href="myProfile.php" class="w3-bar-item w3-button">My Profile</a>
   <a href="inbox.php" class="w3-bar-item w3-button">Inbox</a>
-  <?php
-  if ($pos2 == "Faculty") {
-    echo '<a href="facultyReport.php" class="w3-bar-item w3-button w3-hide-small w3-right">Report History</a>';
-  }
-  ?>
   <a href="notAvailable.php" class="w3-bar-item w3-button">Log Out</a>
 </div>
 

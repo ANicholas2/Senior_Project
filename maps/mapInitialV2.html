@@ -126,7 +126,7 @@
 
 			// Sets the initial Map View
             map = L.map("map", {
-				maxBounds: csubBounds,
+				//maxBounds: csubBounds,
 				attributionControl: false,
 				zoomControl: true
 			}).setView([lat, lon], 17);
@@ -164,15 +164,22 @@
 
             // User Marker for Student Icon
             // Student Icon
-            var myIcon = L.icon({
+            var BlueIcon = L.icon({
                 iconUrl: 'CSUB Blue Marker.png',
                 iconSize: [50, 50],
                 iconAnchor: [22, 94],
                 popupAnchor: [4, -85]
             });
 
+			var YellowIcon = L.icon({
+                iconUrl: 'CSUB Yellow Marker.png',
+                iconSize: [50, 50],
+                iconAnchor: [22, 94],
+                popupAnchor: [4, -85]
+            });
+
 			// Creates the marker for the user
-            var marker = L.marker([lat, lon], {icon: myIcon}).addTo(map)
+            var marker = L.marker([lat, lon], {icon: BlueIcon}).addTo(map)
                 .bindPopup('<b>User Location</b>').openPopup();
             
             //Start at Bakersfield after User Marker is set
