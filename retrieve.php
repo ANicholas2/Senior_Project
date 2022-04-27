@@ -5,6 +5,10 @@ include “connectToDB.php”;
 include “dbfunctions.php”;
 
 ?>
+
+<?php
+session_start();
+/*
 <?php
 // This uses GOogle API... is it bad to mix with leaflet? 
 function geoLocate($address)
@@ -45,5 +49,16 @@ function geoLocate($address)
 
     return array('lat' => null, 'long' => null, 'status' => false);
 } //https://www.codegrepper.com/code-examples/php/php+get+current+location+latitude+longitude
+ */
+
+if (isset($_POST["updateLocationForMe"])) {
+	header('Content-type: applicaiton/json');
+
+	$server = 'localhost';
+	$user = 'runnerpp';
+	$pass = 'Lurw01hoy';
+	$database = 'runnerpp';
+}
 ?>
+
 

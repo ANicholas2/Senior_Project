@@ -10,6 +10,17 @@ if(mysqli_connect_errno()) {
 	exit();
 }
 
+
+if (isset($_POST["UpdateLocationForMe"])){
+	header('Content-type: application/json');
+
+	$getMyLocation = $db->prepare("INSERT INTO location (user_id, latitude, longitude) VALUES (?, ?, ?)"); 
+	$getMyLocation->bind_param("iff", $_SESSION["uID"], $_POST["lat"], $_POST["lon"]);
+
+}
+
+
+
 // After retrieve.php gets lat & lon of user, INSERT info
 // into database
 

@@ -43,7 +43,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 	$result=mysqli_query($db, $query);
 	if (mysqli_num_rows($result)>0) {
 		while ($rows=mysqli_fetch_assoc($result)) {
-			echo "<option value=".$rows["fID"].">".$rows["fID"]." ".$rows["fName"]." ".$rows["lName"]." (".$rows["gender"].") </option>";
+			echo "<option value=".$rows["fID"].">".$rows["fName"]." ".$rows["lName"]." (".$rows["gender"].") </option>";
 		}
 	}
 	?>
