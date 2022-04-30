@@ -26,8 +26,6 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 	<style>
-		html, body { height: 100%; width: 100%; margin: 0; } 
-		.leaflet-container { max-width: 100%; max-height: 100%; }
 		.leaflet-control-layers { text-align: left; }
     </style>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" 
@@ -68,7 +66,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 			</div>
 		</div>
 	</div>
-	<p id="demo"></p>
+
 	<div class="w3-container w3-center">
 		<?php
 			$uID = $_SESSION['uID'];

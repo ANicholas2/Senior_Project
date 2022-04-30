@@ -41,8 +41,8 @@ if (isset($_POST["getLocationForPartner"])) {
 
 	if ($_SESSION['position'] == "Faculty") {
 		//Gets student's location
-		$getPartnerLoc = $db->prepare("SELECT * FROM Geolocation INNER JOIN Partnered_With WHERE user_ID=" .$sID ."ORDER BY entered_at DESC LIMIT 1");
-	} else if($_SESSION['position'] == "Student") { 
+		$getPartnerLoc = $db->prepare("SELECT * FROM Geolocation INNER JOIN Partnered_With WHERE user_ID=" .$sID ." ORDER BY entered_at DESC LIMIT 1");
+	} else { 
 		//Gets Faculty location
 		$getPartnerLoc = $db->prepare("SELECT * FROM Geolocation INNER JOIN Partnered_With WHERE user_ID=" .$fID ." ORDER BY entered_at DESC LIMIT 1");
 	}
