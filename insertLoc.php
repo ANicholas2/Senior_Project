@@ -10,24 +10,35 @@ if(mysqli_connect_errno()) {
 	exit();
 }
 
-if (isset($_POST['updateLocationForMe'])) {
+if (isset($_POST['updateMyLocation'])) {
+    header('Content-type: application/json');
+
+    $uID = $_SESSION['uID'];
+    $lat = $_POST['lat'];
+    $lon = $_POST['lon'];
+
+    // $uID = 28;
+    // $lat = "40.730610";
+    // $lon = "-73.935242";
 
     // Prepare an insert statement into Geolocation table
-    $query = $db->prepare("INSERT INTO Geolocation (user_ID, latitude, longitude) VALUES (?, ?, ?)");
+    $getLocation = $db->prepare("INSERT INTO Geolocation (user_ID, latitude, longitude) VALUES (?, ?, ?)");
 
     // Bind the variables to the parameter as integers and floats.
-    $query->bind_param("iff", $_SESSION["uID"], $_POST["lat"], $_POST["lon"]);
+    //$query->bind_param("iff", $uID, $lat, $lon);
+
+    // Uses doubles instead of floats
+    $getLocation->bind_param("idd", $uID, $lat, $lon);
 
     // Execute the statement
-    if ($query->execute()) {
+    if ($getLocation->execute()) {
+        echo "success";
     } else {
-		echo mysqli_error($db);
-	}
+        echo "failure";
+    }
 
-    //$query = $query->get_result();
-
+    die();
 }
 
 ?>
-<?php
 

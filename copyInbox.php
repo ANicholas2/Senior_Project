@@ -4,6 +4,7 @@ session_start();
 //connecting to DB
 include "connectToDB.php";
 include "dbfunctions.php";
+require_once "navV2.php";
 
 
 if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
@@ -15,43 +16,39 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		} else {
 			echo mysqli_error($db);
 		}
-		die();
-	}
-	else if (isset($_POST['getMessages'])){
-		header("Content-type:application/json");
 
+		//header("inbox.php");
+		//header("Content-type:application/json");
 		$getMessages = $db->prepare("SELECT Message FROM Walk".$_SESSION['walkID']." NATURAL JOIN Notify ORDER BY messageID ASC");
 		if($getMessages->execute()) {
 		} else {
-			echo json_encode(array("error" => mysqli_error($db)));
+			echo mysqli_error($db);
 		}	
 		$resMess = $getMessages->get_result();
 		$rows1 = [];
 		while($mess = $resMess->fetch_assoc()) {
-			//$rows1 [] = $mess;
-			/*if($_SESSION['position'] == "Faculty") {
+			$rows1 [] = $mess;
+			if($_SESSION['position'] == "Faculty") {
 				echo "Faculty";
 			} else
-				echo "Student";*/
-
-			$messElem = "";
-
-			$messElem .= '<div style="display: flex; flex-direction: row">';
-			$messElem .= '<div class="w3-panel w3-leftbar w3-left-align w3-round-xlarge w3-metro-dark-blue" style="font-style: italic;">';
-			$messElem .= '<p>'.$mess['Message'].'</p>';
-			$messElem .= '</div>';
-			$messElem .= '</div>';
-
-			$rows1[] = $messElem;
+				echo "Student";
+			/*echo '<div style="display: flex; flex-direction: row">';
+			echo '<div class="w3-panel w3-leftbar w3-left-align w3-round-xlarge w3-metro-dark-blue" style="font-style: italic;">';
+			echo '<p>'.$rows1.'</p>';
+			//echo json_encode($rows1);
+			//die();
+			echo '</div>';
+			echo '</div>';*/
 		}
 		echo json_encode($rows1);
 		die();
 	}
+
 ?>
 
+<body>
 <!DOCTYPE html>
 <html lang="en">
-<head>
 <meta charset="UTF-8">
 <title>Messages</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -67,44 +64,16 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 <meta name="theme-color" content="#ffffff">
 <!--<meta http-equiv="refresh" content="10">-->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+integrity="sha256-/xUj+30Ju5yEx1q6GSYGSHK7tPXkynS7ogEvDej/m4="
 crossorigin="anonymous">
 </script>
-<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"
-integrity="sha256-6XMVI0zB8cRzfZjqKcD01PBsAy3FlDASrlC8SxCpInY="
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"
+integrity="sha256-VazP97ZCwtekAsvgPBSUwPFKdrwD3unUfSGVYrahUqU="
 crossorigin="anonymous">
 </script>
 
 
 	<script>
-	function sendMessages(evt) {
-		evt.preventDefault();
-
-		let messageID = evt.target[0].value;
-
-		let args = {
-			message: messageID
-		};
-		$.post("inbox.php", args)
-			.done(function (result, status, xhr) {/*
-				if (status == "success") {
-					console.log(result); 
-					let messages = document.getElementById("messages");
-					messages.innerHTML = "";
-
-					for (let m of result) {
-						messages.innerHTML += m.Message + "<br>";
-			}
-			}
-	else {
-		$("#messages").html("Error approving post: " + result);
-			}*/
-			})
-			.fail(function (xhr, status, error) {
-				$("#messages").html('Error approving post: ${error}, responseText: ${xhr.responseText}');
-			});
-	}
-
 	function getMessages() {
 		let args = {
 		getMessages: true
@@ -117,7 +86,7 @@ crossorigin="anonymous">
 					messages.innerHTML = "";
 
 					for (let m of result) {
-						messages.innerHTML += m;
+						messages.innerHTML += m.Message + "<br>";
 					}
 				}
 				else {
@@ -125,20 +94,13 @@ crossorigin="anonymous">
 				}
 			})
 			.fail(function (xhr, status, error) {
-				$("#messages").html('Error approving post: ${error}, responseText: ${xhr.responseText}');
+				$("#messages").html("Error approving post: ${error}, responseText: ${xhr.responseText}");
 			});
 	}
 
-	setInterval(getMessages, 1000);
 	</script>
-</head>
 
 <body>
-
-<?php
-	require_once "navV2.php";
-?>
-
 
 <!-- page container - needed for submit -->
 
@@ -148,9 +110,6 @@ crossorigin="anonymous">
 	<!-- Connected Username -->
 	<p style="color: #2A558C"><b>@FacultyMember</b></p>
 	<hr class="w3-grey">
-
-	<div id="messages">
-	</div>
 
 	<!-- Singular Message Container  -->
 	<!-- <p class="w3-tiny w3-right-align">@username</p> -->
@@ -203,7 +162,7 @@ echo "stu";*/
     <!-- Predetermined Messages -->
     <div class="w3-container w3-center">
 	<hr class="w3-grey">
-<form action="" method="POST" onsubmit="sendMessages(event)">
+<form action="" method="POST">
 	<select class="w3-select w3-border w3-margin-bottom" style="width: 100%" name="message">
 		<option value="" disabled selected>Choose a message:</option>
 <?php
@@ -226,6 +185,9 @@ echo "stu";*/
 </div>
 
 <button onclick="getMessages()">Get messages</button>
+<div id="messages">
+</div>
+
 </body>
 </html>
 

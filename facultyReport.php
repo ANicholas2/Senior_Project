@@ -4,7 +4,6 @@ session_start();
 //connecting to DB
 include "connectToDB.php";
 include "dbfunctions.php";
-require_once "navV2.php";
 
 $fID = (int)$_SESSION['fID'];
 
@@ -25,6 +24,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 <link rel="icon" type="image/png" sizes="16x16" href="favicon_package_v0/favicon-16x16.png">
 <link rel="manifest" href="favicon_package_v0/site.webmanifest">
 <link rel="mask-icon" href="favicon_package_v0/safari-pinned-tab.svg" color="#5bbad5">
+<script src="https://kit.fontawesome.com/a6d0ff8634.js" crossorigin="anonymous"></script>
 <meta name="msapplication-TileColor" content="#da532c">
 <meta name="theme-color" content="#ffffff">
 <body>
@@ -33,7 +33,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 	<!-- Connected Username -->
 	<p><b>Walk Report History</b></p>
 <form action="" method="POST">
-	<select class="w3-select w3-border w3-margin-top w3-margin-bottom" style="width: 90%" name="report" type="submit">
+	<select class="w3-select w3-border w3-margin-top w3-margin-bottom" style="width: 90%; font-size: 16px"name="report" type="submit">
 		<option value="" disabled selected>View Reports: </option>
 <?php
 	$count=1;
@@ -58,45 +58,51 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 	<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-hover-green" style="width: 90%;" type="submit">Display Report 
 		<i class="fa-solid fa-file-lines"></i></button>
 </form>
-	<hr class="w3-grey">
+	<!-- <hr class="w3-grey"> -->
 
     <!-- Print Out Section for Reports -->
-<?php
-if(isset($_POST['report'])){
-	$rID = $_POST['report'];
-	$count2=1;
-	$query2 = "SELECT repID, sID, pickUp, dropOff, startTime, endTime FROM Reports WHERE fID=".$fID;
-	$result2=mysqli_query($db, $query2);
-	if (mysqli_num_rows($result2)>0) {
-		while ($rows2=mysqli_fetch_assoc($result2)) {
-			if($rID == $count2) {
-				$query3 = "SELECT fName FROM User WHERE uID=".$rows2["sID"];
-				$result3=mysqli_query($db, $query3);
-				if (mysqli_num_rows($result3)>0) {
-					while ($rows3=mysqli_fetch_assoc($result3)) {
-						$sName = $rows3["fName"];
+	<?php
+	if(isset($_POST['report'])){
+		$rID = $_POST['report'];
+		$count2=1;
+		$query2 = "SELECT repID, sID, pickUp, dropOff, startTime, endTime FROM Reports WHERE fID=".$fID;
+		$result2=mysqli_query($db, $query2);
+		if (mysqli_num_rows($result2)>0) {
+			while ($rows2=mysqli_fetch_assoc($result2)) {
+				if($rID == $count2) {
+					$query3 = "SELECT fName FROM User WHERE uID=".$rows2["sID"];
+					$result3=mysqli_query($db, $query3);
+					if (mysqli_num_rows($result3)>0) {
+						while ($rows3=mysqli_fetch_assoc($result3)) {
+							$sName = $rows3["fName"];
+						}
 					}
-				}
-				echo '<div class="w3-container w3-center w3-margin-top">';    
-				echo '<div class="w3-card w3-margin w3-margin-bottom">'; 
-				echo '<div class="w3-container w3-metro-dark-blue">';
-				echo '<h4>Report #: '.$rows2["repID"].'</h4>';
-				echo '</div>';
- 
-				echo '<p>Student: '.$sName.'</p>'; 
-                echo '<p>Pick-Up: '.$rows2["pickUp"].'</p>';
-                echo '<p>Drop-Off: '.$rows2["dropOff"].'</p>';
-                echo '<p>Start Time: '.$rows2["startTime"].'</p>';
-                echo '<p>End Time: '.$rows2["endTime"].'</p>';
-				echo '</div>';
-				echo '</div>';
+					echo '<hr class="w3-grey">';
+					echo '<div class="w3-container w3-center w3-margin-top">';    
+					echo '<div class="w3-card w3-margin w3-margin-bottom">'; 
+					echo '<div class="w3-container w3-metro-dark-blue">';
+					echo '<h4>Report #: '.$rows2["repID"].'</h4>';
+					echo '</div>';
+	
+					echo '<p>Student: '.$sName.'</p>'; 
+					echo '<p>Pick-Up: '.$rows2["pickUp"].'</p>';
+					echo '<p>Drop-Off: '.$rows2["dropOff"].'</p>';
+					echo '<p>Start Time: '.$rows2["startTime"].'</p>';
+					echo '<p>End Time: '.$rows2["endTime"].'</p>';
+					echo '</div>';
+					echo '</div>';
+					echo '<hr class="w3-grey">';
 
-			}	
-			$count2++;
+				}	
+				$count2++;
+			}
 		}
 	}
-}
 	?>
+
+	<a href="connectFaculty.php"<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-hover-green" style="width: 90%">Back to Connect 
+            <i class="fa-solid fa-arrow-right-to-bracket"></i></button></a>
+
 </div>
 </body>
 </html>

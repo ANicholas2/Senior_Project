@@ -25,6 +25,28 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <link rel="mask-icon" href="favicon_package_v0/safari-pinned-tab.svg" color="#5bbad5">
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
+	<style>
+		html, body { height: 100%; width: 100%; margin: 0; } 
+		.leaflet-container { max-width: 100%; max-height: 100%; }
+		.leaflet-control-layers { text-align: left; }
+    </style>
+	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" 
+		integrity="sha512-hoalWLoI8r4UszCkZ5kL8vayOGVae1oxXe/2A4AO6J9+580uKHDO3JdHb7NzwwzK5xr/Fs0W40kiNHxM9vyTtQ==" 
+		crossorigin=""
+	/>
+	<script src="https://unpkg.com/leaflet@1.8.0/dist/leaflet.js" 
+		integrity="sha512-BB3hKbKWOc9Ez/TAwyWxNXeoV9c1v6FIeYiBieIWkpLjauysF18NzgR1MBNBXf8/KABdlkX68nAhlwcDFLGPCQ==" 
+		crossorigin="">
+	</script>
+	<!-- <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css"> -->
+	<script src="https://code.jquery.com/jquery-3.6.0.min.js" 
+		integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" 
+		crossorigin="anonymous">
+	</script>
+	<script src="https://code.jquery.com/ui/1.13.1/jquery-ui.min.js" 
+		integrity="sha256-eTyxS0rkjpLEo16uXTS0uVCS4815lc40K2iVpWDvdSY=" 
+		crossorigin="anonymous">
+	</script>
     <!-- <body> -->
     <body onload="showLoc()">
 	<div class="w3-container w3-text-metro-dark-blue">
@@ -46,7 +68,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 			</div>
 		</div>
 	</div>
-	
+	<p id="demo"></p>
 	<div class="w3-container w3-center">
 		<?php
 			$uID = $_SESSION['uID'];
@@ -74,140 +96,210 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
             <i class="fa-solid fa-person-walking"></i></button></a>
     </div>
 <script>
-	//Variables
+	// Global Variables
 	var map;
+	var partnerMarker, userMarker;
+	var newMarker;
+	var firstTime = true;
 
-function showLoc() {
-	var x = document.getElementById("mapBttnID");
-	var y = document.getElementById("map");
-
-	if (navigator.geolocation) {
-		setInterval(() => {
-			navigator.geolocation.getCurrentPosition(works, error);
-		}, 1000);
-	} else {
-		loc.innerHTML = "Geolocation not supported.";
-	}
-
-	if (x.style.display === "none") {
-		x.style.display = "block";
-	} else {
-		x.style.display = "none";
-	}
-
-	if (y.style.display === "none") {
-		y.style.display = "block";
-	} else {
-		y.style.display = "none";
-	}
-}
-
-function works(loc) {
-	var lat = loc.coords.latitude;
-	var lon = loc.coords.longitude;
-	getMap(lat, lon);
-}
-
-function error() {
-	alert("Cannot get location");
-}
-
-var newMarker;
-function addMarker(e) {
-	var popUp = L.popup();
-	newMarker = new L.Marker(e.latlng, {
-		draggable: true,
-		autoPan: true,
-		riseOnHover: true
-	});
-	map.addLayer(newMarker);
-	newMarker.bindPopup("<b>You are here!</b><br>Latitude: " + e.latlng.lat + "<br>Longitude: " + e.latlng.lng).openPopup();
-	newMarker.on('dragend', function(e) {
-		popUp.setLatLng(e.target.getLatLng());
-		popUp.setContent("<b>You are here!</b><br>Latitude: " + e.target.getLatLng().lat + "<br>Longitude: " + e.target.getLatLng().lng);
-		newMarker.bindPopup(popUp).openPopup();
-	});
-}
-
-function removeMarker(e) {
-	map.removeLayer(newMarker);
-}
-
-function getMap(lat, lon) {
-	// Bounding Box for the map
-	var northEast = L.latLng(35.354213, -119.096448),
-		southWest = L.latLng(35.342976, -119.109933),
-		csubBounds = L.latLngBounds(northEast, southWest);
-
-	// Sets the initial Map View
-	map = L.map("map", {
-		maxBounds: csubBounds,
-		attributionControl: false,
-		zoomControl: true
-	}).setView([lat, lon], 17);
-	
-	// Adds the Map Tile Layer
-	var baseLayers = {
-		"OpenStreetMap": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
-			attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-			minZoom: 16,
-			maxZoom: 21,
-			id: 'mapbox/streets-v11',
-			tileSize: 512,
-			zoomOffset: -1,
-			accessToken: 'pk.eyJ1IjoiZHZpbnRpIiwiYSI6ImNrend1enYxdjg5c3oybm5rdnRsNzAyMHIifQ.wpv77ZIRfk3mI1gyqoOSAg'
-		}),
-		"Satellite": L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}", {
-			attribution: "Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community",
-			minZoom: 16,
-			maxZoom: 19,
-			tileSize: 512,
-			zoomOffset: -1
-		})
-	};
-
-	// This makes the default map view to be OpenStreetMap
-	this.map.addLayer(baseLayers["OpenStreetMap"]);
-
-	// Adds the Layer Switch to the map
-	L.control.layers(baseLayers, null, {
-		collapsed: true
-	}).addTo(map);
-
-	// Zooms the map to the bounding box
-	map.fitBounds(csubBounds);
-
-	// User Marker for Student Icon
-	// Student Icon
+	// Custom Icons for Markers
 	var BlueIcon = L.icon({
-		iconUrl: 'CSUB Blue Marker.png',
-		iconSize: [50, 50],
-		iconAnchor: [22, 94],
-		popupAnchor: [4, -85]
-	});
+			iconUrl: 'maps/CSUB Blue Marker.png',
+			iconSize: [50, 50],
+			iconAnchor: [22, 94],
+			popupAnchor: [4, -85]
+		});
 
 	var YellowIcon = L.icon({
-		iconUrl: 'CSUB Yellow Marker.png',
+		iconUrl: 'maps/CSUB Yellow Marker.png',
 		iconSize: [50, 50],
 		iconAnchor: [22, 94],
 		popupAnchor: [4, -85]
 	});
 
-	// Creates the marker for the user
-	var marker = L.marker([lat, lon], {icon: BlueIcon}).addTo(map)
-		.bindPopup('<b>User Location</b>').openPopup();
-	
-	//Start at Bakersfield after User Marker is set
-	//map.panTo(new L.LatLng(35.350056, -119.103599));
-	
-	// Disable Double Click Zoom
-	map.doubleClickZoom.disable();
+	function showLoc() {
+		var x = document.getElementById("mapBttnID");
+		var y = document.getElementById("map");
 
-	// On click, add a new marker
-	map.on('dblclick', addMarker);
+		if (navigator.geolocation) {
+			setInterval(() => {
+				navigator.geolocation.getCurrentPosition(locate, error);
+			}, 5000);
+		} else {
+			loc.innerHTML = "Geolocation not supported.";
+		}
 
-	// On double click, remove marker
-	map.on('click', removeMarker);
+		if (x.style.display === "none") {
+			x.style.display = "block";
+		} else {
+			x.style.display = "none";
+		}
+
+		if (y.style.display === "none") {
+			y.style.display = "block";
+		} else {
+			y.style.display = "none";
+		}
+	}
+
+	function locate(loc) {
+		var lat = loc.coords.latitude;
+		var lon = loc.coords.longitude;
+		getMap(lat, lon);
+		updateLocation(lat, lon);
+		getLocationForPartner();
+	}
+
+	function updateLocation(lat, lon) {
+		let args = {
+			updateMyLocation: true,
+			lat: lat,
+			lon: lon
+		};
+		$.post("locationUpdater.php", args);
+	}
+
+	function getLocationForPartner() {
+		let args = {
+			getLocationForPartner: true
+		};
+		$.post("locationUpdater.php", args)
+		.done(function (result, status, xhr) {
+			if (status == "success") {
+				console.log(result);
+				console.log("Successfully retrieved partner location.");
+				if (result.length > 0) {
+					var lat = result[0].latitude;
+					var lon = result[0].longitude;
+					if (partnerMarker) {
+						partnerMarker.setLatLng([lat, lon]);
+					} else {
+						partnerMarker = L.marker([lat, lon], {icon: YellowIcon}).addTo(map)
+								.bindPopup("<b>Partner</b>").openPopup();
+					}
+				}
+			}
+		})
+		.fail(function (xhr, status, error) {
+			console.log(error);
+			//console.warn(xhr.responseText);
+		});
+	}
+
+	function error() {
+		alert("Cannot get location");
+	}
+	
+	function addMarker(e) {
+		var popUp = L.popup();
+		newMarker = new L.Marker(e.latlng, {
+			draggable: true,
+			autoPan: true,
+			riseOnHover: true
+		});
+		
+		map.addLayer(newMarker);
+		newMarker.bindPopup("<b>You are here!</b><br>Latitude: " + e.latlng.lat + "<br>Longitude: " + e.latlng.lng).openPopup();
+		newMarker.on('dragend', function(e) {
+			popUp.setLatLng(e.target.getLatLng());
+			popUp.setContent("<b>You are here!</b><br>Latitude: " + e.target.getLatLng().lat + "<br>Longitude: " + e.target.getLatLng().lng);
+			newMarker.bindPopup(popUp).openPopup();
+		});
+	}
+	
+	// function removeMarker() {
+	// 	map.removeLayer(newMarker);
+	// }
+	
+	function getMap(lat, lon) {
+		// Bounding Box for the map
+		var northEast = L.latLng(35.354213, -119.096448),
+			southWest = L.latLng(35.342976, -119.109933),
+			csubBounds = L.latLngBounds(northEast, southWest);
+
+		if (firstTime) {
+			map = L.map("map", {
+				//maxBounds: csubBounds,
+				attributionControl: false,
+				zoomControl: true
+			}).setView([lat, lon], 17);
+		
+			// Adds the Map Tile Layer
+			var baseLayers = {
+				"Streets": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+					minZoom: 8,
+					maxZoom: 21,
+					tileSize: 512,
+					zoomOffset: -1,
+					id: 'mapbox/streets-v11',
+					accessToken: 'pk.eyJ1IjoiZHZpbnRpIiwiYSI6ImNrend1enYxdjg5c3oybm5rdnRsNzAyMHIifQ.wpv77ZIRfk3mI1gyqoOSAg'
+				}),
+				"Satellite": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+					minZoom: 16,
+					maxZoom: 20,
+					tileSize: 512,
+					zoomOffset: -1,
+					id: 'mapbox/satellite-v9',
+					accessToken: 'pk.eyJ1IjoiZHZpbnRpIiwiYSI6ImNrend1enYxdjg5c3oybm5rdnRsNzAyMHIifQ.wpv77ZIRfk3mI1gyqoOSAg'
+				})
+			};
+
+			// This makes the default map view to be OpenStreetMap
+			this.map.addLayer(baseLayers["Streets"]);
+
+			// Adds the Layer Switch to the map
+			L.control.layers(baseLayers, null, {
+				collapsed: true
+			}).addTo(map);
+
+			// Disable Double Click Zoom
+			map.doubleClickZoom.disable();
+
+			// On double click, add a new marker
+			map.on('dblclick', addMarker);
+
+			// On double click, remove marker
+			//map.on('click', removeMarker);
+
+			firstTime = false;
+		}
+
+		// Zooms the map to the bounding box
+		//map.fitBounds(csubBounds);
+
+		if (userMarker) {
+			userMarker.setLatLng([lat, lon]);
+		} else {
+			userMarker = L.marker([lat, lon], {icon: BlueIcon}).addTo(map)
+				.bindPopup('<b>User Location</b>');
+		}
+
+		// Creates the marker for the user
+		/*if (isset($_SESSION['position'] == "Faculty")) {
+			var userMarker = L.marker([lat, lon], {
+				icon: BlueIcon,
+				draggable: true,
+				autoPan: true,
+				riseOnHover: true
+			});
+		} else {
+			var userMarker = L.marker([lat, lon], {
+				icon: YellowIcon,
+				draggable: true,
+				autoPan: true,
+				riseOnHover: true
+			});
+		}*/
+
+		// if (map.hasLayer(addMarker)) {
+		// 	// On double click, remove marker
+		// 	map.on('click', removeMarker);
+		// } else {
+		// 	// On double click, add a new marker
+		// 	map.on('dblclick', addMarker);
+		// }
 	}
 </script>
 </body>

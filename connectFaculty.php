@@ -74,7 +74,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
         echo '<hr>';
         echo '<a href="facultyReport.php"<button class="w3-button w3-center w3-round-large w3-metro-dark-blue w3-ripple w3-margin-bottom w3-hover-green" 
             style="width: 90%">Report Page <i class="fa-solid fa-file-lines"></i></button></a></br>';
-        echo '<a href="logout.php"<button class="w3-button w3-center w3-round-large w3-metro-dark-blue w3-ripple w3-margin-bottom w3-hover-green" 
+        echo '<a href="notAvailable.php"<button class="w3-button w3-center w3-round-large w3-metro-dark-blue w3-ripple w3-margin-bottom w3-hover-green" 
             style="width: 90%">Log Out <i class="fa-solid fa-arrow-right-to-bracket"></i></a></button>';
     }
     ?>

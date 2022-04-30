@@ -35,7 +35,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		</div>
 
     <div class="w3-container w3-center">
-	<select class="w3-select w3-border w3-margin-bottom w3-margin-top" style="width: 90%" name="faculty">
+	<select class="w3-select w3-border w3-margin-bottom w3-margin-top" style="width: 90%; font-size: 16px" name="faculty">
 	<option value="" disabled selected>Choose Walker:</option>
 	
 	<?php
@@ -50,7 +50,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 	
 	</select>
 
-	<select class="w3-select w3-border w3-margin-bottom" style="width: 90%" name="pickUp">
+	<select class="w3-select w3-border w3-margin-bottom" style="width: 90%; font-size: 16px" name="pickUp">
 	<option value="" disabled selected>Choose Pick-Up:</option>
 
 	<?php
@@ -65,7 +65,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 	
 	</select>
 
-	<select class="w3-select w3-border w3-margin-bottom" style="width: 90%" name="dropOff">
+	<select class="w3-select w3-border w3-margin-bottom" style="width: 90%; font-size: 16px" name="dropOff">
 	<option value="" disabled selected>Choose Drop-Off:</option>
 
 	<?php

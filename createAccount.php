@@ -61,7 +61,7 @@
     <div class="w3-row w3-section">
         <div class="w3-col" style="width:50px"><i class="w3-xxlarge fa fa-users"></i></div>
             <div class="w3-rest">
-                <select class="w3-select w3-border w3-margin-bottom" name="myGender">
+                <select class="w3-select w3-border w3-margin-bottom" style="font-size: 16px" name="myGender">
                 <option value="" disabled selected>Gender</option>
                     <option value="Male">Male</option>
                     <option value="Female">Female</option>
@@ -93,7 +93,7 @@
     <div class="w3-row w3-section">
         <div class="w3-col" style="width:50px"><i class="w3-xxlarge fa fa-info-circle"></i></div>
             <div class="w3-rest">
-                <select class="w3-select w3-border w3-margin-bottom" name="myPosition">
+                <select class="w3-select w3-border w3-margin-bottom" style="font-size: 16px" name="myPosition">
                 <option value="" disabled selected>Student/Faculty</option>
                     <option value="Student">Student</option>
                     <option value="Faculty">Faculty</option>

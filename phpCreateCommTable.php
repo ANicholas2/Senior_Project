@@ -17,6 +17,8 @@ var_dump($walkID);
 		fID int,
 		sID int,
 		nID int,
+		sentBy int,
+		timeSent varchar(50),
 		PRIMARY KEY (messageID),
 		FOREIGN KEY (fID) REFERENCES Faculty(fID),
 		FOREIGN KEY (sID) REFERENCES User(uID),
