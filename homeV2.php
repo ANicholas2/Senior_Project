@@ -58,11 +58,11 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 
 				<!--<p> Show map of your location. </p>-->
 				<div class="w3-container w3-center" id="mapBttnID"> 
-				<img src="full-map.jpg" style="height: 200px; width: 400px; max-width: 100%; max-height: 100%;" class="w3-margin-top"></br>
+			<!---	<img src="full-map.jpg" style="height: 200px; width: 400px; max-width: 100%; max-height: 100%;" class="w3-margin-top"></br>  -->
 				<!-- <button class="w3-button w3-round-large w3-metro-dark-blue w3-margin w3-hover-green" style="width: 60%;" onclick="showLoc()">Show Location 
 					<i class="fa-solid fa-location-dot"></i></button> -->
-				<button class="w3-button w3-circle w3-xlarge w3-metro-dark-blue w3-margin" onclick="showLoc()">
-					<i class="fa-solid fa-location-dot"></i></button>
+			<!--	<button class="w3-button w3-circle w3-xlarge w3-metro-dark-blue w3-margin" onclick="showLoc()">  -->
+			<!--		<i class="fa-solid fa-location-dot"></i></button>  -->
 				</div>
 
 				<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/leaflet.js"></script>
@@ -109,9 +109,8 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 	<script>
 		//Variables
 		var map;
-		var partnerMarker, userMarker;
-		var newMarker;
-		var firstTime = true;
+		var partnerMarker, userMarker, newMarker;
+		var firstTime = load = true;
 
 		// Custom Icons for Markers
 		var BlueIcon = L.icon({
@@ -133,9 +132,13 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 			var y = document.getElementById("map");
 
 			if (navigator.geolocation) {
+				if (load) {
+					navigator.geolocation.getCurrentPosition(locate, error);
+					load = false;
+				}
 				setInterval(() => {
 					navigator.geolocation.getCurrentPosition(locate, error);
-				}, 5000);
+				}, 2000);
 			} else {
 				loc.innerHTML = "Geolocation not supported.";
 			}
@@ -158,6 +161,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 			var lon = loc.coords.longitude;
 			getMap(lat, lon);
 			updateLocation(lat, lon);
+			// getLocationForPartner makes satellite view blurry
 			getLocationForPartner();
 		}
 
@@ -185,8 +189,12 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 						if (partnerMarker) {
 							partnerMarker.setLatLng([lat, lon]);
 						} else {
-							partnerMarker = L.marker([lat, lon], {icon: YellowIcon}).addTo(map)
-								.bindPopup("<b>Partner</b>").openPopup();
+							// Creates the marker for the Partner
+							partnerMarker = L.marker([lat, lon], {icon: BlueIcon}).addTo(map)
+								.bindPopup('<b>Partner</b>');
+
+							// Moves map to partner location
+							map.panTo([lat, lon]);
 						}
 					}
 				}
@@ -210,17 +218,17 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 				riseOnHover: true
 			});
 			map.addLayer(newMarker);
-			newMarker.bindPopup("<b>You are here!</b><br>Latitude: " + e.latlng.lat + "<br>Longitude: " + e.latlng.lng).openPopup();
 			newMarker.on('dragend', function(e) {
 				popUp.setLatLng(e.target.getLatLng());
-				popUp.setContent("<b>You are here!</b><br>Latitude: " + e.target.getLatLng().lat + "<br>Longitude: " + e.target.getLatLng().lng);
-				newMarker.bindPopup(popUp).openPopup();
 			});
 		}
 
-		// function removeMarker(e) {
-		// 	map.removeLayer(newMarker);
-		// }
+		function removeMarker(e) {
+			if (newMarker) {
+				map.removeLayer(newMarker);
+				newMarker = null;
+			}
+		}
 
 		function getMap(lat, lon) {
 			// Bounding Box for the map
@@ -233,11 +241,12 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 					//maxBounds: csubBounds,
 					attributionControl: false,
 					zoomControl: true
-				}).setView([lat, lon], 17);
+				}).setView([lat, lon], 16);
 			
 				// Adds the Map Tile Layer
 				var baseLayers = {
-					"Streets": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+					// @2x in tile source will use 1024x1024 tiles
+					"Streets": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}@2x?access_token={accessToken}', {
 						attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 						minZoom: 8,
 						maxZoom: 21,
@@ -246,9 +255,9 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 						id: 'mapbox/streets-v11',
 						accessToken: 'pk.eyJ1IjoiZHZpbnRpIiwiYSI6ImNrend1enYxdjg5c3oybm5rdnRsNzAyMHIifQ.wpv77ZIRfk3mI1gyqoOSAg'
 					}),
-					"Satellite": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+					"Satellite": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}@2x?access_token={accessToken}', {
 						attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-						minZoom: 16,
+						minZoom: 8,
 						maxZoom: 20,
 						tileSize: 512,
 						zoomOffset: -1,
@@ -269,7 +278,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 				map.doubleClickZoom.disable();
 
 				// On double click, add a new marker
-				map.on('dblclick', addMarker);
+				//map.on('dblclick', addMarker);
 
 				// On double click, remove marker
 				//map.on('click', removeMarker);
@@ -283,15 +292,10 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 			if (userMarker) {
 				userMarker.setLatLng([lat, lon]);
 			} else {
-				userMarker = L.marker([lat, lon], {icon: BlueIcon}).addTo(map)
-					.bindPopup('<b>User Location</b>').openPopup();
+				// Creates the marker for the user
+				userMarker = L.marker([lat, lon], {icon: YellowIcon}).addTo(map)
+					.bindPopup('<b>User</b>');
 			}
-
-			//var stuMarker = L.marker([lat, lon], {icon: YellowIcon}).addTo(map)
-            //    .bindPopup('<b>User Location</b>').openPopup();
-            
-            //Start at Bakersfield after User Marker is set
-            //map.panTo(new L.LatLng(35.350056, -119.103599));
 		}
 </script>
 </body>

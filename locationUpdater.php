@@ -29,6 +29,16 @@ if (isset($_POST['updateMyLocation'])) {
     } else {
 		echo mysqli_error($db);
 	}
+
+	// Delete Geolocation table entries older than 2 minutes
+	$delLocation = $db->prepare("DELETE FROM Geolocation WHERE entered_at < (now() - 120)");
+	
+	// Execute the statement
+	if ($delLocation->execute()) {
+	} else {
+		echo mysqli_error($db);
+	}
+
     die();
 }
 

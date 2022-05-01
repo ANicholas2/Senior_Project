@@ -13,16 +13,33 @@ if(mysqli_connect_errno()) {
 
 if($_SERVER['REQUEST_METHOD'] == "POST") {
 	$sID = $_SESSION['sID'];
-	var_dump($sID);
+	//var_dump($sID);
 	$fID = $_POST['faculty'];  //partnerID 
-	var_dump($fID);
+	//var_dump($fID);
+	$pickUp = $_POST['pickUp'];
+	$dropOff = $_POST['dropOff'];
 	
 	$_SESSION['fID'] = $fID;  //partnerID 
-
-	$_SESSION['pickUp'] = $_POST['pickUp'];
-	$_SESSION['dropOff'] = $_POST['dropOff'];
+	$_SESSION['pickUp'] = $pickUp;
+	$_SESSION['dropOff'] = $dropOff;
 	$time=date('Y-m-d H:i:s');
 	$_SESSION['startTime'] = $time;
+	
+	if(empty($fID)) {
+		header("Location: connect.php?error=Faculty selection is required!");
+		echo "Faculty selection is required!";
+		exit();
+	}
+	if(empty($pickUp)) {
+		header("Location: connect.php?error=Pick up location is required!");
+		echo "Pick up location is required!";
+		exit();
+	}
+	if(empty($dropOff)) {
+		header("Location: connect.php?error=Drop off location is required!");
+		echo "Drop off location is required!";
+		exit();
+	}
 
 	$query = $db->prepare("INSERT INTO Partnered_With (sID, fID, pickUp, dropOff) VALUES (?,?,?,?)");
 	$query->bind_param('iiss', $sID, $fID, $_SESSION['pickUp'], $_SESSION['dropOff']);

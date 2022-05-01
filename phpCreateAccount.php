@@ -27,7 +27,6 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
 	$pw = encrypt($pass);
 	$re = encrypt($reenter);
 
-	echo $uname;
 	if(empty($uname)) {
 		header("Location: createAccount.php?error=Username is required!");
 		echo "Username is required!";

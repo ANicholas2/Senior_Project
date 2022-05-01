@@ -22,7 +22,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <link rel="icon" type="image/png" sizes="16x16" href="favicon_package_v0/favicon-16x16.png">
     <link rel="manifest" href="favicon_package_v0/site.webmanifest">
     <link rel="mask-icon" href="favicon_package_v0/safari-pinned-tab.svg" color="#5bbad5">
-    <script src="https://kit.fontawesome.com/a6d0ff8634.js" crossorigin="anonymous"></script>
+	<script src="https://kit.fontawesome.com/a6d0ff8634.js" crossorigin="anonymous"></script>
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
     <body>
@@ -81,13 +81,13 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 	</select>
 
 
-	<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-margin-bottom w3-hover-green" style="width: 90%" type="submit">Connect 
-        <i class="fa-solid fa-handshake"></i></button><!--</a>--></br>
+<!--	<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-margin-bottom w3-hover-green" style="width: 90%" type="submit">Connect -->
+<!--        <i class="fa-solid fa-handshake"></i></button><!--  -->
 		<?php
 			$uID = $_SESSION['uID'];
 			$fID = $_SESSION['fID'];
 			
-			$query2 = $db->prepare("SELECT fName, lName, gender FROM Faculty WHERE fID=?");
+			/*$query2 = $db->prepare("SELECT fName, lName, gender FROM Faculty WHERE fID=?");
 			$query2->bind_param('i', $fID);
 			if($query2->execute()) {
 				mysqli_stmt_bind_result($query2, $res_first, $res_last, $res_gen);
@@ -100,10 +100,28 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 						<p> <?php echo "Connected: ".$fname." ".$lname." (".$gender.")"; ?> </p>
 					</div>  <?php
 				}
-			} else { echo mysqli_error($db); }
+			} else { echo mysqli_error($db); }*/
+
+
+			if($isA == 0) {
+
+				echo '<p>Connected!</p>';
+				echo '<a href="homeV2.php"
+					<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-margin-bottom w3-hover-green" style="width: 90%" type="submit" onclick="">Connect 
+        <i class="fa-solid fa-handshake"></i></button><!--</a>--></br>';
+			} else {
+				echo '<p>Connecting...</p>';
+			}
 		?>	
     </div>
 	</form>
+<?php
+if(isset($_GET['error'])) { ?>
+<div class="w3-panel w3-red">
+<h3>Error!</h3>
+<p> <?php echo $_GET['error']; ?> </p>
+</div>
+<?php } ?>
 	</body>
 	</html>
 

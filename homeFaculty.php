@@ -26,6 +26,8 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
     <meta name="msapplication-TileColor" content="#da532c">
     <meta name="theme-color" content="#ffffff">
 	<style>
+		html, body { height: 100%; width: 100%; margin: 0; } 
+		.leaflet-container { max-width: 100%; max-height: 100%; }
 		.leaflet-control-layers { text-align: left; }
     </style>
 	<link rel="stylesheet" href="https://unpkg.com/leaflet@1.8.0/dist/leaflet.css" 
@@ -96,9 +98,8 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 <script>
 	// Global Variables
 	var map;
-	var partnerMarker, userMarker;
-	var newMarker;
-	var firstTime = true;
+	var partnerMarker, userMarker, newMarker;
+	var firstTime = load = true;
 
 	// Custom Icons for Markers
 	var BlueIcon = L.icon({
@@ -120,9 +121,14 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		var y = document.getElementById("map");
 
 		if (navigator.geolocation) {
-			setInterval(() => {
+			// If first time load Map 
+			if (load) {
 				navigator.geolocation.getCurrentPosition(locate, error);
-			}, 5000);
+				load = false;
+			}
+			setInterval(() => {
+				navigator.geolocation.getCurrentPosition(locate);
+			}, 2000);
 		} else {
 			loc.innerHTML = "Geolocation not supported.";
 		}
@@ -145,6 +151,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		var lon = loc.coords.longitude;
 		getMap(lat, lon);
 		updateLocation(lat, lon);
+		// getLocationForPartner makes satellite view blurry
 		getLocationForPartner();
 	}
 
@@ -172,8 +179,12 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 					if (partnerMarker) {
 						partnerMarker.setLatLng([lat, lon]);
 					} else {
+						// Creates the marker for the Partner
 						partnerMarker = L.marker([lat, lon], {icon: YellowIcon}).addTo(map)
-								.bindPopup("<b>Partner</b>").openPopup();
+							.bindPopup('<b>Partner</b>');
+
+						// Moves map to partner location
+						map.panTo([lat, lon]);
 					}
 				}
 			}
@@ -197,17 +208,20 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		});
 		
 		map.addLayer(newMarker);
-		newMarker.bindPopup("<b>You are here!</b><br>Latitude: " + e.latlng.lat + "<br>Longitude: " + e.latlng.lng).openPopup();
+		//newMarker.bindPopup("<b>You are here!</b><br>Latitude: " + e.latlng.lat + "<br>Longitude: " + e.latlng.lng).openPopup();
 		newMarker.on('dragend', function(e) {
 			popUp.setLatLng(e.target.getLatLng());
-			popUp.setContent("<b>You are here!</b><br>Latitude: " + e.target.getLatLng().lat + "<br>Longitude: " + e.target.getLatLng().lng);
-			newMarker.bindPopup(popUp).openPopup();
+			//popUp.setContent("<b>You are here!</b><br>Latitude: " + e.target.getLatLng().lat + "<br>Longitude: " + e.target.getLatLng().lng);
+			//newMarker.bindPopup(popUp).openPopup();
 		});
 	}
 	
-	// function removeMarker() {
-	// 	map.removeLayer(newMarker);
-	// }
+	function removeMarker(e) {
+		if (newMarker) {
+			map.removeLayer(newMarker);
+			newMarker = null;
+		}
+	}
 	
 	function getMap(lat, lon) {
 		// Bounding Box for the map
@@ -220,11 +234,12 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 				//maxBounds: csubBounds,
 				attributionControl: false,
 				zoomControl: true
-			}).setView([lat, lon], 17);
+			}).setView([lat, lon], 16);
 		
 			// Adds the Map Tile Layer
 			var baseLayers = {
-				"Streets": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+				// @2x in tile source will use 1024x1024 tiles
+				"Streets": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}@2x?access_token={accessToken}', {
 					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
 					minZoom: 8,
 					maxZoom: 21,
@@ -233,9 +248,9 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 					id: 'mapbox/streets-v11',
 					accessToken: 'pk.eyJ1IjoiZHZpbnRpIiwiYSI6ImNrend1enYxdjg5c3oybm5rdnRsNzAyMHIifQ.wpv77ZIRfk3mI1gyqoOSAg'
 				}),
-				"Satellite": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
+				"Satellite": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}@2x?access_token={accessToken}', {
 					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-					minZoom: 16,
+					minZoom: 8,
 					maxZoom: 20,
 					tileSize: 512,
 					zoomOffset: -1,
@@ -256,11 +271,11 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 			map.doubleClickZoom.disable();
 
 			// On double click, add a new marker
-			map.on('dblclick', addMarker);
+			//map.on('dblclick', addMarker);
 
 			// On double click, remove marker
 			//map.on('click', removeMarker);
-
+			
 			firstTime = false;
 		}
 
@@ -270,34 +285,10 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		if (userMarker) {
 			userMarker.setLatLng([lat, lon]);
 		} else {
+			// Creates the marker for the user
 			userMarker = L.marker([lat, lon], {icon: BlueIcon}).addTo(map)
-				.bindPopup('<b>User Location</b>');
+				.bindPopup('<b>User</b>');
 		}
-
-		// Creates the marker for the user
-		/*if (isset($_SESSION['position'] == "Faculty")) {
-			var userMarker = L.marker([lat, lon], {
-				icon: BlueIcon,
-				draggable: true,
-				autoPan: true,
-				riseOnHover: true
-			});
-		} else {
-			var userMarker = L.marker([lat, lon], {
-				icon: YellowIcon,
-				draggable: true,
-				autoPan: true,
-				riseOnHover: true
-			});
-		}*/
-
-		// if (map.hasLayer(addMarker)) {
-		// 	// On double click, remove marker
-		// 	map.on('click', removeMarker);
-		// } else {
-		// 	// On double click, add a new marker
-		// 	map.on('dblclick', addMarker);
-		// }
 	}
 </script>
 </body>
