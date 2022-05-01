@@ -241,7 +241,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 				// @2x in tile source will use 1024x1024 tiles
 				"Streets": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}@2x?access_token={accessToken}', {
 					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-					minZoom: 8,
+					minZoom: 15,
 					maxZoom: 21,
 					tileSize: 512,
 					zoomOffset: -1,
@@ -250,7 +250,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 				}),
 				"Satellite": L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}@2x?access_token={accessToken}', {
 					attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
-					minZoom: 8,
+					minZoom: 15,
 					maxZoom: 20,
 					tileSize: 512,
 					zoomOffset: -1,
