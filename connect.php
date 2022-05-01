@@ -80,6 +80,10 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 	
 	</select>
 
+	<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-margin-bottom w3-hover-green" style="width: 90%" type="submit">Connect 
+	<i class="fa-solid fa-handshake"></i></button>
+<!--></br> -->
+	
 
 <!--	<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-margin-bottom w3-hover-green" style="width: 90%" type="submit">Connect -->
 <!--        <i class="fa-solid fa-handshake"></i></button><!--  -->
@@ -103,15 +107,6 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 			} else { echo mysqli_error($db); }*/
 
 
-			if($isA == 0) {
-
-				echo '<p>Connected!</p>';
-				echo '<a href="homeV2.php"
-					<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-margin-bottom w3-hover-green" style="width: 90%" type="submit" onclick="">Connect 
-        <i class="fa-solid fa-handshake"></i></button><!--</a>--></br>';
-			} else {
-				echo '<p>Connecting...</p>';
-			}
 		?>	
     </div>
 	</form>

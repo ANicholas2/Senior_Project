@@ -49,6 +49,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 		crossorigin="anonymous">
 	</script>
     <body>
+	<body onload="showLoc()">
 	<div class="w3-container w3-text-metro-dark-blue">
 		<div class="w3-container w3-center w3-margin-top">    
 			<div class="w3-card w3-margin"> 
