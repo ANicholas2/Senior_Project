@@ -81,33 +81,13 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 	</select>
 
 	<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-margin-bottom w3-hover-green" style="width: 90%" type="submit">Connect 
-	<i class="fa-solid fa-handshake"></i></button>
-<!--></br> -->
-	
+	<i class="fa-solid fa-handshake"></i></button>	
 
-<!--	<button class="w3-button w3-ripple w3-round-large w3-metro-dark-blue w3-margin-bottom w3-hover-green" style="width: 90%" type="submit">Connect -->
-<!--        <i class="fa-solid fa-handshake"></i></button><!--  -->
 		<?php
 			$uID = $_SESSION['uID'];
 			$fID = $_SESSION['fID'];
+		?>
 			
-			/*$query2 = $db->prepare("SELECT fName, lName, gender FROM Faculty WHERE fID=?");
-			$query2->bind_param('i', $fID);
-			if($query2->execute()) {
-				mysqli_stmt_bind_result($query2, $res_first, $res_last, $res_gen);
-				if($query2->fetch()) {
-					$fname=$res_first;
-					$lname=$res_last;
-					$gender=$res_gen;
-					// echo "Connected with: ".$fname." ".$lname." (".$gender.")"; ?>
-					<div class="w3-panel w3-green w3-round-large">
-						<p> <?php echo "Connected: ".$fname." ".$lname." (".$gender.")"; ?> </p>
-					</div>  <?php
-				}
-			} else { echo mysqli_error($db); }*/
-
-
-		?>	
     </div>
 	</form>
 <?php

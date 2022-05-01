@@ -239,7 +239,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 			
 			if (firstTime) {
 				map = L.map("map", {
-					//maxBounds: csubBounds,
+					maxBounds: csubBounds,
 					attributionControl: false,
 					zoomControl: true
 				}).setView([lat, lon], 16);
