@@ -115,14 +115,14 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 
 		// Custom Icons for Markers
 		var BlueIcon = L.icon({
-			iconUrl: 'maps/CSUB Blue Marker.png',
+			iconUrl: 'res/CSUB Blue Marker.png',
 			iconSize: [50, 50],
 			iconAnchor: [22, 94],
 			popupAnchor: [4, -85]
 		});
 
 		var YellowIcon = L.icon({
-			iconUrl: 'maps/CSUB Yellow Marker.png',
+			iconUrl: 'res/CSUB Yellow Marker.png',
 			iconSize: [50, 50],
 			iconAnchor: [22, 94],
 			popupAnchor: [4, -85]

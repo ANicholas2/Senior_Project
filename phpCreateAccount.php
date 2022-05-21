@@ -74,9 +74,9 @@ if($_SERVER['REQUEST_METHOD'] == "POST") {
 	}
 
 	if ($pos == "Faculty") {
-		$imagePath = "profile_pics/imgFaculty.png";
+		$imagePath = "res/imgFaculty.png";
 	} else {
-		$imagePath = "profile_pics/imgStudent.png";
+		$imagePath = "res/imgStudent.png";
 	}
 	
 	$query = $db->prepare("INSERT INTO User (fName, lName, uName, gender, email, position, pass, imagePath) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");

@@ -86,7 +86,7 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 					// echo "Connected with: ".$fname." ".$lname." (".$gender.")"; ?>
 					<p style="font-style: italic;"><?php echo "Connected to: ".$fname." (".$gender.")"; ?></p>
 					<p style="font-style: italic;"><?php echo "Pick-Up: ".$_SESSION['pickUp']; ?></p>
-					<p style="font-style: italic;"><?php echo "Drop-Off: ".$_SESSION['dropOff']; ?></p><?php
+					<p style="font-style: italic;"><?maps/php echo "Drop-Off: ".$_SESSION['dropOff']; ?></p><?php
 				}
 			} else { echo mysqli_error($db); }
 		?>	
@@ -103,14 +103,14 @@ if(isset($_SESSION['uID']) && isset($_SESSION['uName'])) {
 
 	// Custom Icons for Markers
 	var BlueIcon = L.icon({
-			iconUrl: 'maps/CSUB Blue Marker.png',
+			iconUrl: 'res/CSUB Blue Marker.png',
 			iconSize: [50, 50],
 			iconAnchor: [22, 94],
 			popupAnchor: [4, -85]
 		});
 
 	var YellowIcon = L.icon({
-		iconUrl: 'maps/CSUB Yellow Marker.png',
+		iconUrl: 'res/CSUB Yellow Marker.png',
 		iconSize: [50, 50],
 		iconAnchor: [22, 94],
 		popupAnchor: [4, -85]

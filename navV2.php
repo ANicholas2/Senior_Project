@@ -12,9 +12,9 @@ $pos2 = $_SESSION["position"];
 <div class="w3-bar w3-metro-dark-blue w3-large">
   <?php
   if ($pos == "Faculty") {
-    echo '<a href="homeFaculty.php" class="w3-bar-item w3-button w3-metro-dark-blue"><img src="csub_logoV2.png" style="height:26px;">';
+    echo '<a href="homeFaculty.php" class="w3-bar-item w3-button w3-metro-dark-blue"><img src="res/csub_logoV2.png" style="height:26px;">';
   } else {
-    echo '<a href="homeV2.php" class="w3-bar-item w3-button w3-metro-dark-blue"><img src="csub_logoV2.png" style="height:26px;">';
+    echo '<a href="homeV2.php" class="w3-bar-item w3-button w3-metro-dark-blue"><img src="res/csub_logoV2.png" style="height:26px;">';
   }
   ?>
   <a href="notAvailable.php" class="w3-bar-item w3-button w3-hide-small w3-right">Log Out</a>  

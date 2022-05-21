@@ -20,7 +20,7 @@ header("Location: indexV2.php");
 <body>
 <!-- Page Container -->
 <div class="w3-container w3-card-4 w3-margin">
-    <h2 class="w3-center"><img src="csub_logoV3.png" style="height:64px;"></h2>
+    <h2 class="w3-center"><img src="res/csub_logoV3.png" style="height:64px;"></h2>
     <h4 class="w3-center w3-monospace">Logged Out!</h4>
 </div>
 

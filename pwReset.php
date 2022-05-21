@@ -29,7 +29,7 @@ session_start();
 
 <!-- Page Container -->
 <form action="phpPwReset.php" method="POST" class="w3-container w3-card-4 w3-text-metro-dark-blue w3-margin">
-    <h2 class="w3-center"><img src="csub_logoV3.png" style="height:64px"></h2>
+    <h2 class="w3-center"><img src="res/csub_logoV3.png" style="height:64px"></h2>
     
     <!-- Username -->
     <div class="w3-row w3-section">
