@@ -23,7 +23,7 @@ $pos2 = $_SESSION["position"];
   <a href="javascript:void(0)" class="w3-bar-item w3-button w3-large w3-right w3-hide-large w3-hide-medium" onclick="myFunction()">&#9776;</a>
 </div>
 
-<!-- Hamburger Menu -->
+<!-- Hamburger/Mobile Menu -->
 <div id="demo" class="w3-bar-block w3-metro-light-blue w3-hide w3-hide-large w3-hide-medium">
   <a href="myProfile.php" class="w3-bar-item w3-button">My Profile</a>
   <a href="inbox.php" class="w3-bar-item w3-button">Inbox</a>
